@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image  } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { TouchableOpacity } from "react-native-gesture-handler";
 import { StatusBar } from 'expo-status-bar';
 
 

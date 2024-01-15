@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image  } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 
 export default function LoginScreen() {
+  // const navigation = useNavigation(); // Add this line to get the navigation object
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -56,9 +59,14 @@ export default function LoginScreen() {
         source={require('../img/logo_google.png')}
       />
 
-      <Text style={styles.registerText}>
+      {/* <Text style={styles.registerText}>
         Not a member? Register now
-      </Text>
+      </Text> */}
+      
+        <TouchableOpacity
+         onPress={()=>navigation.navigate("") }>
+            <Text style={styles.registerText}> Not a member? Register now</Text>
+        </TouchableOpacity>
     </>
   );
 }
