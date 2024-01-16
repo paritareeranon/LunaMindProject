@@ -4,7 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 
-export default function LoginScreen() {
+export default function LoginView() {
   // const navigation = useNavigation(); // Add this line to get the navigation object
 
   const [email, setEmail] = useState('');
@@ -18,7 +18,7 @@ export default function LoginScreen() {
   };
 
   return (
-    <>
+    <View style={styles.container}>
        <Image
         source={require('../img/logo1.png')}
         style={styles.logo}
@@ -55,8 +55,11 @@ export default function LoginScreen() {
         Or continue with
       </Text>
 
-      <Image
+      <Image style={{
+        alignSelf:'center',
+      }}
         source={require('../img/logo_google.png')}
+      
       />
 
       {/* <Text style={styles.registerText}>
@@ -64,10 +67,10 @@ export default function LoginScreen() {
       </Text> */}
       
         <TouchableOpacity
-         onPress={()=>navigation.navigate("") }>
+          onPress={()=> ("RegisterScreen") }>
             <Text style={styles.registerText}> Not a member? Register now</Text>
         </TouchableOpacity>
-    </>
+    </View>
   );
 }
 
@@ -75,17 +78,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#EAE1F1',
-    alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center', // Center vertically
+    alignItems: 'center', // Center horizontally
   },
   header: {
     fontSize: 15,
     marginBottom: 40,
+    alignSelf:'center',
   },
   logo: {
     width: 100,
     height: 100,
     marginBottom: 20,
+    alignSelf:'center',
   },
   input: {
     width: '80%',
@@ -94,6 +99,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginBottom: 20,
     paddingHorizontal: 10,
+    alignSelf:'center',
   },
   button: {
     width: '80%',
@@ -101,6 +107,7 @@ const styles = StyleSheet.create({
     paddingRight: 15,
     borderRadius: 35,
     marginTop: 35,
+    alignSelf:'center',
   },
   buttonText: {
     fontSize: 18,
@@ -109,13 +116,17 @@ const styles = StyleSheet.create({
     margin: 10,
     color: '#ffffff',
     backgroundColor: 'transparent',
+    
   },
   continueText: {
     marginTop: 64,
     marginBottom: 30,
+    alignSelf:'center',
+    
   },
   registerText: {
     marginTop: 64,
+    alignSelf:'center',
 
   },
 });

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image  } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { TouchableOpacity } from "react-native-gesture-handler";
+
 import { StatusBar } from 'expo-status-bar';
 
 
@@ -28,7 +28,7 @@ const RegisterScreen = ({ navigation }) => {
   
     return (
       <View style={styles.container}>
-        <ImageBackground source={require('./img/Login Screen.png')} style={styles.image}>
+       
         <Text style={styles.header}>Register</Text>
         <TextInput
           style={styles.input}
@@ -62,7 +62,6 @@ const RegisterScreen = ({ navigation }) => {
           Sign in 
         </Text>
         </LinearGradient>
-      </ImageBackground>
       </View>
     );
   };
@@ -70,25 +69,24 @@ const RegisterScreen = ({ navigation }) => {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      Imagebackground :'white'
+      backgroundColor: '#EAE1F1',
+      justifyContent: 'center', // Center vertically
+      alignItems: 'center', // Center horizontally
     },
     header: {
       fontSize: 30,
       marginBottom: 20,
       fontWeight:'bold',
-      fontFamily:''
+      alignSelf:'center',
     },
     input: {
       width: '80%',
       height: 40,
-      // borderColor: 'gray',
-      // borderWidth: 1,
+      backgroundColor: 'white',
       borderRadius: 8,
       marginBottom: 20,
       paddingHorizontal: 10,
-      backgroundColor:'white',
+      alignSelf:'center',
     },
     linearGradient: {
       // flex: 1,
@@ -96,7 +94,7 @@ const RegisterScreen = ({ navigation }) => {
       paddingLeft: 15,
       paddingRight: 15,
       borderRadius: 35 ,
-      // borderColor: 'gray'
+      alignSelf:'center',
     },
     buttonText: {
       fontSize: 18,
@@ -105,6 +103,7 @@ const RegisterScreen = ({ navigation }) => {
       margin: 10,
       color: '#ffffff',
       backgroundColor: 'transparent',
+      alignSelf:'center',
     },
   });
   
