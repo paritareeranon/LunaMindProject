@@ -4,8 +4,9 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 
-export default function LoginView() {
-  // const navigation = useNavigation(); // Add this line to get the navigation object
+const LoginView = ()=> {
+  const navigation = useNavigation(); // Add this line to get the navigation object
+
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -67,7 +68,7 @@ export default function LoginView() {
       </Text> */}
       
         <TouchableOpacity
-          onPress={()=> ("RegisterScreen") }>
+          onPress={()=> navigation.navigate("RegisterScreen") }>
             <Text style={styles.registerText}> Not a member? Register now</Text>
         </TouchableOpacity>
     </View>
@@ -130,3 +131,4 @@ const styles = StyleSheet.create({
 
   },
 });
+export default LoginView;
