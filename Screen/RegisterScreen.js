@@ -24,13 +24,7 @@ const RegisterScreen = ({ navigation }) => {
     navigation.navigate('LoginView'); // Assuming 'HomeScreen' is the correct screen name
   };
 
-  useEffect(() => {
-    const backAction = () => {
-      navigation.goBack();
-      return true;
-    };
-  }, []);
-
+  
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Register</Text>

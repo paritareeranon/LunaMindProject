@@ -45,7 +45,7 @@ const LoginView = ()=> {
       />
 
         <LinearGradient colors={['#FDB5CD', '#D2D5F8']} style={styles.button}>
-        <TouchableOpacity onPress={handleSignIn}>
+        <TouchableOpacity onPress={()=>navigation.navigate("Home")}>
           <Text style={styles.buttonText}>
             Sign in
           </Text>
