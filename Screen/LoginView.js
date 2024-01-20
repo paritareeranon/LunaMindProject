@@ -49,7 +49,7 @@ const LoginView = () => {
         {errorMessage ? (
           <Text style={[styles.errorMessage]}>
             {errorMessage}
-          </Text>
+          </Text> 
         ) : null}
 
         <TextInput
@@ -84,10 +84,16 @@ const LoginView = () => {
           source={require('../img/logo_google.png')}
         />
 
-        <TouchableOpacity
-          onPress={() => navigation.navigate("RegisterScreen")}>
-          <Text style={styles.registerText}> Not a member? Register now</Text>
-        </TouchableOpacity>
+        <View style={{ flexDirection: 'row' }}>
+          <Text style={styles.notMemberText}> Not a member? </Text>
+            <TouchableOpacity onPress={() => navigation.navigate("RegisterScreen")}>
+              <View>
+                <Text style={styles.registerText}>
+                  Register now
+                </Text>
+              </View>
+            </TouchableOpacity>
+        </View>
       </View>
     </ImageBackground>
   );
@@ -147,7 +153,11 @@ const styles = StyleSheet.create({
   registerText: {
     marginTop: 64,
     alignSelf: 'center',
-    color: '#5CA3FF',
+    color: '#5CA3FF'
+  },
+  notMemberText: {
+    marginTop: 64,
+    alignSelf: 'center',
   },
   errorMessage: {
     fontSize: 10,
