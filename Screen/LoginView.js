@@ -6,7 +6,6 @@ import { StatusBar } from 'expo-status-bar';
 
 const LoginView = () => {
   const navigation = useNavigation(); // Add this line to get the navigation object
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
