@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ImageBackground } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
 
@@ -28,7 +28,6 @@ const RegisterScreen = ({ navigation }) => {
     // Check if any field is empty
     if (!username || !firstname || !surname || !email || !password) {
       // Display an alert if any field is empty
-      Alert.alert('Warning', 'Please fill in all fields');
     } else {
       // ใส่ logic
       // For simplicity, we'll just log the entered details
@@ -45,6 +44,9 @@ const RegisterScreen = ({ navigation }) => {
   };
 
   return (
+    <ImageBackground
+    source={require('../img/Screen.png')}
+    style={styles.background}>
     <View style={styles.container}>
       <Text style={styles.header}>Register</Text>
       <TextInput
@@ -79,6 +81,7 @@ const RegisterScreen = ({ navigation }) => {
         </TouchableOpacity>
       </LinearGradient>
     </View>
+    </ImageBackground>
   );
 };
 
@@ -121,6 +124,10 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     backgroundColor: 'transparent',
     alignSelf: 'center',
+  },
+  background: {
+    flex: 1,
+    resizeMode: 'cover',
   },
 });
 
