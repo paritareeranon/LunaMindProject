@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ImageBackground } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ImageBackground,Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
 
@@ -80,6 +80,15 @@ const RegisterScreen = ({ navigation }) => {
           <Text style={styles.buttonText}>Sign up</Text>
         </TouchableOpacity>
       </LinearGradient>
+      <Text style={styles.continueText}>
+          Or continue with
+        </Text>
+        <Image
+          style={{
+            alignSelf: 'center',
+          }}
+          source={require('../img/logo_google.png')}
+        />
     </View>
     </ImageBackground>
   );
@@ -88,15 +97,16 @@ const RegisterScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#EAE1F1',
     justifyContent: 'center',
     alignItems: 'center',
   },
   header: {
     fontSize: 30,
-    marginBottom: 20,
+    marginTop:50 ,
+    padding: 40,
     fontWeight: 'bold',
     alignSelf: 'center',
+    color: '#3F3C3C' ,
   },
   input: {
     width: '80%',
@@ -113,7 +123,7 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     paddingRight: 15,
     borderRadius: 35,
-    marginTop: 35,
+    marginTop: 13,
     alignSelf: 'center',
   },
   buttonText: {
@@ -128,6 +138,12 @@ const styles = StyleSheet.create({
   background: {
     flex: 1,
     resizeMode: 'cover',
+  },
+  continueText: {
+    marginTop: 30,
+    marginBottom: 30,
+    alignSelf: 'center',
+    color: '#3F3C3C' ,
   },
 });
 
