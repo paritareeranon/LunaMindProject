@@ -44,11 +44,11 @@ const LoginView = () => {
           placeholder="Email"
           onChangeText={(text) => setEmail(text)}
           value={email}
-        /> 
+        />
         {errorMessage ? (
           <Text style={[styles.errorMessage]}>
             {errorMessage}
-          </Text> 
+          </Text>
         ) : null}
 
         <TextInput
@@ -85,13 +85,13 @@ const LoginView = () => {
 
         <View style={{ flexDirection: 'row' }}>
           <Text style={styles.notMemberText}> Not a member? </Text>
-            <TouchableOpacity onPress={() => navigation.navigate("RegisterScreen")}>
-              <View>
-                <Text style={styles.registerText}>
-                  Register now
-                </Text>
-              </View>
-            </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate("RegisterScreen")}>
+            <View>
+              <Text style={styles.registerText}>
+                Register now
+              </Text>
+            </View>
+          </TouchableOpacity>
         </View>
       </View>
     </ImageBackground>
@@ -112,11 +112,12 @@ const styles = StyleSheet.create({
     fontSize: 15,
     marginBottom: 40,
     alignSelf: 'center',
+    color: '#3F3C3C'
   },
   logo: {
     width: 100,
     height: 100,
-    marginTop: 120 ,
+    marginTop: 120,
     alignSelf: 'center',
   },
   input: {
@@ -148,6 +149,7 @@ const styles = StyleSheet.create({
     marginTop: 64,
     marginBottom: 30,
     alignSelf: 'center',
+    color: '#3F3C3C'
   },
   registerText: {
     marginTop: 64,
@@ -157,6 +159,7 @@ const styles = StyleSheet.create({
   notMemberText: {
     marginTop: 64,
     alignSelf: 'center',
+    color: '#3F3C3C'
   },
   errorMessage: {
     fontSize: 10,
