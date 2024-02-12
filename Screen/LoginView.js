@@ -3,6 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, ImageBackgr
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
+import { UserAuth } from '../api/Authentication';
 
 const LoginView = () => {
   const navigation = useNavigation(); // Add this line to get the navigation object
@@ -10,20 +11,36 @@ const LoginView = () => {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSignIn = () => {
-    if (email === '0000' && password === '0000') {
-      console.log('Signed in successfully!');
-      setErrorMessage('');
-      navigation.navigate("Home");
-    } else {
-      console.log('Invalid email or password');
-      setErrorMessage('Username or password you entered is incorrect. try again!');
+  // const handleSignIn = () => {
+  //   if (email === '0000' && password === '0000') {
+  //     console.log('Signed in successfully!');
+  //     setErrorMessage('');
+  //     navigation.navigate("Home");
+  //   } else {
+  //     console.log('Invalid email or password');
+  //     setErrorMessage('Username or password you entered is incorrect. try again!');
+  //   }
+
+  //   setEmail('');
+  //   setPassword('');
+  // };
+  const handleSignIn = async (user, pass) => {
+    try {
+      const check = await UserAuth("parii@gmail.com", "123456");
+      console.log(check.message);
+      if (check.status === false) {
+        if (check.message === "auth/invalid-email") {
+        } else if (check.message === "auth/missing-password") {
+        } else if (check.message === "auth/invalid-credential") {
+        }
+      } else {
+        console.log("User sign in successful");
+        navigation.navigate("Home");
+      }
+    } catch (err) {
+      console.error("SignIn failed", err.message);
     }
-
-    setEmail('');
-    setPassword('');
   };
-
   return (
     <ImageBackground
       source={require('../img/Screen.png')}

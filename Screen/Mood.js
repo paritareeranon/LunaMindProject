@@ -3,77 +3,125 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, ImageBackgr
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import { AntDesign } from '@expo/vector-icons';
+import CustomPopup from '../Component/CustomPopup';
 
 const Mood = () => {
+    const [currentPopup, setCurrentPopup] = useState(null);
+    // const [isPopupVisible, setPopupVisible] = useState(false);
+
+    const openPopup = (popupNumber) => {
+        setCurrentPopup(popupNumber);
+    };
+
+    const closePopup = () => {
+        setCurrentPopup(null);
+    };
+
+    const handleOk = () => {
+        // ตัวอย่างการทำงานเมื่อกด OK
+        closePopup();
+        // ทำอย่างอื่นต่อไปนี้...
+    };
+    // const showPopup = () => {
+    //     setPopupVisible(true);
+    // };
+
+    // const hidePopup = () => {
+    //     setPopupVisible(false);
+    // };
+
     return (
         <LinearGradient colors={['#DECBED', '#FFDCDF']} style={{ flex: 1 }}>
-            <View style={styles.container1}>
-                <View style={styles.container}>
-                    <View style={styles.headerContainer}>
-                        <AntDesign name="left" size={22} color="3F3C3C" />
-                        <Text style={styles.calendar}>
-                            Tuesday, December 26
-                        </Text>
-                        <AntDesign name="left" size={22} color="transparent" />
-                    </View>
-                </View>
-                <View style={styles.rectangle}>
-                    <Text style={styles.moodText}>
-                        How was your day ?
+            <View style={styles.container}>
+                <View style={styles.headerContainer}>
+                    <AntDesign name="left" size={22} color="#3F3C3C" />
+                    <Text style={styles.calendar}>
+                        Tuesday, December 26
                     </Text>
-                    <View style={styles.moodImage}>
-                        <View style={styles.container2}>
-                        <Image
-                            source={require('../img/1.png')}
-                            style={styles.mood}
-                        />
+                    <AntDesign name="left" size={22} color="transparent" />
+                </View>
+            </View>
+            <View style={styles.rectangle}>
+                <Text style={styles.moodText}>
+                    How was your day ?
+                </Text>
+                <View style={styles.moodImage}>
+                    <View>
+                        <TouchableOpacity onPress={() => openPopup(1)}>
+                            <Image
+                                source={require('../img/1.png')}
+                                style={styles.mood}
+                            />
 
-                        <Text style={styles.moodScore}>
-                            5
-                        </Text>
-                        </View>
-                        <View style={styles.container2}>
-                        <Image
-                            source={require('../img/2.png')}
-                            style={styles.mood}
-                        />
+                            <Text style={styles.moodScore}> 5 </Text>
+                        </TouchableOpacity>
 
-                        <Text style={styles.moodScore}>
-                            4
-                        </Text>
-                        </View>
-                        <View style={styles.container2}>
-                        <Image
-                            source={require('../img/3.png')}
-                            style={styles.mood}
-                        />
+                        {currentPopup === 1 && (
+                            <CustomPopup
+                                visible={true}
+                                onClose={closePopup}
+                                onOk={handleOk}
+                                customImage={require('../img/1.png')}
+                                customText="Don’t forget to smile your smile is the prettiest :)"
+                            />
+                        )}
+                    </View>
 
-                        <Text style={styles.moodScore}>
-                            3
-                        </Text>
-                        </View>
-                        <View style={styles.container2}>
-                        <Image
-                            source={require('../img/4.png')}
-                            style={styles.mood}
-                        />
+                    <View>
+                        <TouchableOpacity onPress={() => openPopup(2)}>
+                            <Image
+                                source={require('../img/2.png')}
+                                style={styles.mood}
+                            />
 
-                        <Text style={styles.moodScore}>
-                            2
-                        </Text>
-                        </View>
-                        <View style={styles.container2}>
-                        <Image
-                            source={require('../img/5.png')}
-                            style={styles.mood}
-                        />
+                            <Text style={styles.moodScore}> 4 </Text>
+                        </TouchableOpacity>
 
-                        <Text style={styles.moodScore}>
-                            1
-                        </Text>
-                        </View>
+                        {currentPopup === 2 && (
+                            <CustomPopup
+                                visible={true}
+                                onClose={closePopup}
+                                onOk={handleOk}
+                                customImage={require('../img/2.png')}
+                                customText="imm mhaaaaaaaaaaa"
+                            />
+                        )}
+                    </View>
+
+                    <View>
+                        <TouchableOpacity onPress={() => openPopup(1)}>
+                            <Image
+                                source={require('../img/3.png')}
+                                style={styles.mood}
+                            />
+
+                            <Text style={styles.moodScore}> 3 </Text>
+                        </TouchableOpacity>
+                    </View>
+
+                    <View>
+                        <TouchableOpacity onPress={() => openPopup(1)}>
+                            <Image
+                                source={require('../img/4.png')}
+                                style={styles.mood}
+                            />
+
+                            <Text style={styles.moodScore}> 2 </Text>
+                        </TouchableOpacity>
+                    </View>
+
+                    <View>
+                        <TouchableOpacity onPress={() => openPopup(1)}>
+                            <Image
+                                source={require('../img/5.png')}
+                                style={styles.mood}
+                            />
+
+                            <Text style={styles.moodScore}> 1 </Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
+
             </View>
         </LinearGradient>
     );
@@ -86,9 +134,6 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
         backgroundColor: 'white',
         justifyContent: 'center',
-    },
-    container1: {
-        flex: 1,
     },
     headerContainer: {
         flexDirection: 'row',
@@ -103,8 +148,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     rectangle: {
-        width: '90%',
-        height: '25%',
+        width: '88%',
+        height: '26%',
         backgroundColor: 'white',
         alignSelf: 'center',
         marginTop: 200,
@@ -124,20 +169,18 @@ const styles = StyleSheet.create({
         paddingHorizontal: 18,
         marginHorizontal: 4,
         alignSelf: 'center'
-      },
-       mood: {
-        marginHorizontal: 5,
+    },
+    mood: {
+        marginHorizontal: 8,
         width: 45,
         height: 45,
-      },
-      container2: {
-        alignItems: 'center',
     },
     moodScore: {
         fontSize: 13,
-        paddingTop: 12,
+        paddingTop: 10,
         color: '#3F3C3C',
-        // fontFamily: 'Gill Sans',
+        alignSelf: 'center'
+        // fontFamily: ,
     },
 
 })

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ImageBackground,Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
+import { CreateUser } from '../api/Authentication';
 
 const RegisterScreen = ({ navigation }) => {
   const [username, setUsername] = useState('');
@@ -19,6 +20,7 @@ const RegisterScreen = ({ navigation }) => {
 
   const handleRegister = () => {
     // Set border color states based on input validation
+    CreateUser("parii@gmail.com", "123456")
     setUsernameBorderColor(username.trim() === '' ? 'red' : 'transparent');
     setFirstnameBorderColor(firstname.trim() === '' ? 'red' : 'transparent');
     setSurnameBorderColor(surname.trim() === '' ? 'red' : 'transparent');
@@ -31,15 +33,15 @@ const RegisterScreen = ({ navigation }) => {
     } else {
       // ใส่ logic
       // For simplicity, we'll just log the entered details
-      console.log('Username:', username);
-      console.log('Firstname:', firstname);
-      console.log('Surname:', surname);
-      console.log('Email:', email);
-      console.log('Password:', password);
+      // console.log('Username:', username);
+      // console.log('Firstname:', firstname);
+      // console.log('Surname:', surname);
+      // console.log('Email:', email);
+      // console.log('Password:', password);
 
       // After successful registration, you can navigate to another screen
       // For example, navigate to a Home screen
-      navigation.navigate('LoginView'); // Assuming 'HomeScreen' is the correct screen name
+      // navigation.navigate('LoginView'); // Assuming 'HomeScreen' is the correct screen name
     }
   };
 
@@ -49,11 +51,6 @@ const RegisterScreen = ({ navigation }) => {
     style={styles.background}>
     <View style={styles.container}>
       <Text style={styles.header}>Register</Text>
-      <TextInput
-        style={[styles.input, { borderColor: usernameBorderColor }]}
-        placeholder="Username"
-        onChangeText={(text) => setUsername(text)}
-      />
       <TextInput
         style={[styles.input, { borderColor: firstnameBorderColor }]}
         placeholder="Firstname"
