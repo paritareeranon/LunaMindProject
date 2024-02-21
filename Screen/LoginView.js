@@ -3,6 +3,10 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, ImageBackgr
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
+import { auth } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut} from 'firebase/auth';  
+
+
 
 const LoginView = () => {
   const navigation = useNavigation(); // Add this line to get the navigation object
@@ -10,19 +14,23 @@ const LoginView = () => {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSignIn = () => {
-    if (email === '0000' && password === '0000') {
-      console.log('Signed in successfully!');
-      setErrorMessage('');
-      navigation.navigate("Home");
-    } else {
-      console.log('Invalid email or password');
-      setErrorMessage('Username or password you entered is incorrect. try again!');
-    }
+  // const handleSignIn = async (email,password) => {
+  //   try {
+  //     // Validate email and password here if needed
 
-    setEmail('');
-    setPassword('');
-  };
+  //     // Sign in with Firebase
+  //     await signInWithEmailAndPassword(auth, email, password);
+
+  //     // If successful, navigate to the Home screen or any other screen
+  //     navigation.navigate("Home");
+  //   } catch (error) {
+  //     // Handle login errors
+  //     console.error("Login Error:", error.message);
+  //     // Set appropriate error messages for email and password if needed
+  //     setEmailError("Invalid email or password");
+  //     setPasswordError("Invalid email or password");
+  //   }
+  // };
 
   return (
     <ImageBackground
@@ -65,7 +73,7 @@ const LoginView = () => {
         ) : null}
 
         <LinearGradient colors={['#FDB5CD', '#D2D5F8']} style={styles.button}>
-          <TouchableOpacity onPress={handleSignIn}>
+          <TouchableOpacity onPress={'handleSignIn'}>
             <Text style={styles.buttonText}>
               Sign in
             </Text>

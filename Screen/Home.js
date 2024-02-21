@@ -4,6 +4,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 
+
+
 const Home = () => {
     return (
       <View style={styles.container}>
