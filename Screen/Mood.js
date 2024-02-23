@@ -1,13 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, ImageBackground } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute  } from '@react-navigation/native';
 import { AntDesign } from '@expo/vector-icons';
 import CustomPopup from '../Component/CustomPopup';
+import CalendarMood from './CalendarMood';
+import moment from 'moment';
+import { firestore } from "../firebaseConfig";
+import { addDoc, collection } from 'firebase/firestore';
+
 
 const Mood = () => {
+    const navigation = useNavigation();
     const [currentPopup, setCurrentPopup] = useState(null);
-    // const [isPopupVisible, setPopupVisible] = useState(false);
+    const route = useRoute();
+    const { selectedDate } = route.params;
+    const [selectedMood, setSelectedMood] = useState(null);
 
     const openPopup = (popupNumber) => {
         setCurrentPopup(popupNumber);
@@ -17,26 +25,44 @@ const Mood = () => {
         setCurrentPopup(null);
     };
 
-    const handleOk = () => {
-        // ตัวอย่างการทำงานเมื่อกด OK
-        closePopup();
-        // ทำอย่างอื่นต่อไปนี้...
+    const handleOk = async (moodScore) => {
+        setSelectedMood(moodScore);
+        if (moodScore !== null) {
+            // Save mood to Firebase
+            await saveMoodToFirebase(moodScore, selectedDate);
+            navigation.navigate("CalendarMood", { moodScore: currentPopup });
+            closePopup();
+        } else {
+            console.error('No mood selected');
+        }
     };
-    // const showPopup = () => {
-    //     setPopupVisible(true);
-    // };
 
-    // const hidePopup = () => {
-    //     setPopupVisible(false);
-    // };
+    const saveMoodToFirebase = async (selectedMood, selectedDate) => {
+        console.log(selectedMood, selectedDate);
+        try {
+            if (selectedMood !== "" && selectedDate) {
+                await addDoc(collection(firestore, "testMood"), {
+                    mood: selectedMood,
+                    date: selectedDate
+                });
+                console.log('Mood added to Firestore!');
+            } else {
+                console.error('No mood selected or date is missing');
+            }
+        } catch (err) {
+            console.error('mood error', err);
+        }
+    };
 
     return (
         <LinearGradient colors={['#DECBED', '#FFDCDF']} style={{ flex: 1 }}>
             <View style={styles.container}>
                 <View style={styles.headerContainer}>
-                    <AntDesign name="left" size={22} color="#3F3C3C" />
+                    <TouchableOpacity onPress={() => navigation.navigate("CalendarMood")}>
+                        <AntDesign name="left" size={22} color="#3F3C3C" />
+                    </TouchableOpacity>
                     <Text style={styles.calendar}>
-                        Tuesday, December 26
+                    {selectedDate ? moment(selectedDate).format('dddd, MMMM D') : ''}
                     </Text>
                     <AntDesign name="left" size={22} color="transparent" />
                 </View>
@@ -46,10 +72,11 @@ const Mood = () => {
                     How was your day ?
                 </Text>
                 <View style={styles.moodImage}>
+
                     <View>
-                        <TouchableOpacity onPress={() => openPopup(1)}>
+                        <TouchableOpacity onPress={() => { openPopup(1); }}>
                             <Image
-                                source={require('../img/1.png')}
+                                source={require('../img/5.png')}
                                 style={styles.mood}
                             />
 
@@ -60,8 +87,8 @@ const Mood = () => {
                             <CustomPopup
                                 visible={true}
                                 onClose={closePopup}
-                                onOk={handleOk}
-                                customImage={require('../img/1.png')}
+                                onOk={() => handleOk("5")}
+                                customImage={require('../img/5.png')}
                                 customText="Don’t forget to smile your smile is the prettiest :)"
                             />
                         )}
@@ -70,7 +97,7 @@ const Mood = () => {
                     <View>
                         <TouchableOpacity onPress={() => openPopup(2)}>
                             <Image
-                                source={require('../img/2.png')}
+                                source={require('../img/4.png')}
                                 style={styles.mood}
                             />
 
@@ -81,15 +108,15 @@ const Mood = () => {
                             <CustomPopup
                                 visible={true}
                                 onClose={closePopup}
-                                onOk={handleOk}
-                                customImage={require('../img/2.png')}
-                                customText="imm mhaaaaaaaaaaa"
+                                onOk={() => handleOk("4")}
+                                customImage={require('../img/4.png')}
+                                customText="The sun will rise and we will try again"
                             />
                         )}
                     </View>
 
                     <View>
-                        <TouchableOpacity onPress={() => openPopup(1)}>
+                        <TouchableOpacity onPress={() => openPopup(3)}>
                             <Image
                                 source={require('../img/3.png')}
                                 style={styles.mood}
@@ -97,29 +124,60 @@ const Mood = () => {
 
                             <Text style={styles.moodScore}> 3 </Text>
                         </TouchableOpacity>
+
+                        {currentPopup === 3 && (
+                            <CustomPopup
+                                visible={true}
+                                onClose={closePopup}
+                                onOk={() => handleOk("3")}
+                                customImage={require('../img/3.png')}
+                                customText="Every day may not be good. But there is something good every day"
+                            />
+                        )}
                     </View>
 
                     <View>
-                        <TouchableOpacity onPress={() => openPopup(1)}>
+                        <TouchableOpacity onPress={() => openPopup(4)}>
                             <Image
-                                source={require('../img/4.png')}
+                                source={require('../img/2.png')}
                                 style={styles.mood}
                             />
 
                             <Text style={styles.moodScore}> 2 </Text>
                         </TouchableOpacity>
+
+                        {currentPopup === 4 && (
+                            <CustomPopup
+                                visible={true}
+                                onClose={closePopup}
+                                onOk={() => handleOk("2")}
+                                customImage={require('../img/2.png')}
+                                customText="It's just a bad day, not a bad life"
+                            />
+                        )}
                     </View>
 
                     <View>
-                        <TouchableOpacity onPress={() => openPopup(1)}>
+                        <TouchableOpacity onPress={() => openPopup(5)}>
                             <Image
-                                source={require('../img/5.png')}
+                                source={require('../img/1.png')}
                                 style={styles.mood}
                             />
 
                             <Text style={styles.moodScore}> 1 </Text>
                         </TouchableOpacity>
+
+                        {currentPopup === 5 && (
+                            <CustomPopup
+                                visible={true}
+                                onClose={closePopup}
+                                onOk={() => handleOk("1")}
+                                customImage={require('../img/1.png')}
+                                customText="Sending you a big virtual hug! Remember, you're never alone"
+                            />
+                        )}
                     </View>
+
                 </View>
 
             </View>

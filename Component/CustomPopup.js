@@ -45,7 +45,8 @@ const styles = StyleSheet.create({
   popupText: {
     fontSize: 15,
     marginBottom: 10,
-    fontFamily: 'Gill Sans'
+    fontFamily: 'Gill Sans',
+    textAlign: 'center'
   },
   popupImage: {
     width: 40,

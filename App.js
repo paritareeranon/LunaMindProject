@@ -7,6 +7,8 @@ import LoginView from './Screen/LoginView';
 import SplashScreen from './Screen/Splashscreen';
 import Home from './Screen/Home';
 import Mood from './Screen/Mood';
+import CalendaMood from './Screen/CalendarMood';
+import CalendarMood from './Screen/CalendarMood';
 
 const Stack = createNativeStackNavigator();
 
@@ -19,6 +21,7 @@ const App =() =>{
       <Stack.Screen name= "RegisterScreen" component={RegisterScreen}/>
       <Stack.Screen name= "Home" component={Home}/>
       <Stack.Screen name= "Mood" component={Mood}/>
+      <Stack.Screen name= "CalendarMood" component={CalendarMood}/>
       </Stack.Navigator>
     </NavigationContainer>
   )

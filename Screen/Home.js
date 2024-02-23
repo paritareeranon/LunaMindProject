@@ -13,9 +13,9 @@ const Home = () => {
             Hello Welcome to Home Screen
         </Text>
           <Button
-        title="MoodScreen"
+        title="CalendarMood"
         color="red"
-        onPress={() => navigation.navigate("Mood")}
+        onPress={() => navigation.navigate("CalendarMood")}
       />
       </View>
     );
