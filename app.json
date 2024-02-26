@@ -20,14 +20,15 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.remem3er.FinalProject"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "9f1dca2d-f56c-4e04-af0f-e581f998451b"
+        "projectId": "32df6052-7f99-4f84-845e-2f21c7cbb15d"
       }
     }
   }

@@ -17,7 +17,16 @@ const Home = () => {
         color="red"
         onPress={() => navigation.navigate("Mood")}
       />
+      <Text>
+            Hello Welcome to Home Screen
+        </Text>
+          <Button
+        title="Profile"
+        color="red"
+        onPress={() => navigation.navigate("Profile")}
+      />
       </View>
+      
     );
   }
 

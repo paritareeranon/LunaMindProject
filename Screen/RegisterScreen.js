@@ -3,45 +3,48 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ImageBackgr
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
 import { CreateUser } from '../api/Authentication';
+import { firestore } from "../firebaseConfig";
+import { addDoc, collection } from 'firebase/firestore';
 
 const RegisterScreen = ({ navigation }) => {
-  const [username, setUsername] = useState('');
   const [firstname, setFirstname] = useState('');
   const [surname, setSurname] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   // States for border colors
-  const [usernameBorderColor, setUsernameBorderColor] = useState('transparent');
   const [firstnameBorderColor, setFirstnameBorderColor] = useState('transparent');
   const [surnameBorderColor, setSurnameBorderColor] = useState('transparent');
   const [emailBorderColor, setEmailBorderColor] = useState('transparent');
   const [passwordBorderColor, setPasswordBorderColor] = useState('transparent');
 
-  const handleRegister = () => {
+  const handleRegister = async() => {
     // Set border color states based on input validation
-    CreateUser("parii@gmail.com", "123456")
-    setUsernameBorderColor(username.trim() === '' ? 'red' : 'transparent');
+    CreateUser(user,pass)
     setFirstnameBorderColor(firstname.trim() === '' ? 'red' : 'transparent');
     setSurnameBorderColor(surname.trim() === '' ? 'red' : 'transparent');
     setEmailBorderColor(email.trim() === '' ? 'red' : 'transparent');
     setPasswordBorderColor(password.trim() === '' ? 'red' : 'transparent');
 
     // Check if any field is empty
-    if (!username || !firstname || !surname || !email || !password) {
+    if (!firstname || !surname || !email || !password) {
       // Display an alert if any field is empty
     } else {
-      // ใส่ logic
-      // For simplicity, we'll just log the entered details
-      // console.log('Username:', username);
-      // console.log('Firstname:', firstname);
-      // console.log('Surname:', surname);
-      // console.log('Email:', email);
-      // console.log('Password:', password);
+        try {
+            if (firstname && surname !== "") {
+                await addDoc(collection(firestore, "testuser"), {
+                    firstname: firstname,
+                    surname: surname,
+                    email: email
+                });
+                console.log('User has been added to Firestore!');
+            } else {
+                console.error('No User selected or date is missing');
+            }
+        } catch (err) {
+            console.error('User error', err);
+        }
 
-      // After successful registration, you can navigate to another screen
-      // For example, navigate to a Home screen
-      // navigation.navigate('LoginView'); // Assuming 'HomeScreen' is the correct screen name
     }
   };
 
@@ -54,16 +57,19 @@ const RegisterScreen = ({ navigation }) => {
       <TextInput
         style={[styles.input, { borderColor: firstnameBorderColor }]}
         placeholder="Firstname"
+
         onChangeText={(text) => setFirstname(text)}
       />
       <TextInput
         style={[styles.input, { borderColor: surnameBorderColor }]}
         placeholder="Surname"
+
         onChangeText={(text) => setSurname(text)}
       />
       <TextInput
         style={[styles.input, { borderColor: emailBorderColor }]}
         placeholder="Email"
+
         onChangeText={(text) => setEmail(text)}
       />
       <TextInput
