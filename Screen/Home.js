@@ -17,6 +17,11 @@ const Home = () => {
         color="red"
         onPress={() => navigation.navigate("CalendarMood")}
       />
+      <Button
+        title="Last period"
+        color="red"
+        onPress={() => navigation.navigate("LastPeriod")}
+      />
       </View>
     );
   }

@@ -46,16 +46,17 @@ const CalendarMood = () => {
             case '1':
                 return '#FE0000';
             default:
-                return 'gray';
+                return 'transparent';
         }
     };
 
     const handleDayPress = (day) => {
         const today = new Date();
         const selected = new Date(day.dateString);
-        console.log(today)
-
+        today.setHours(today.getHours()+7)
+        
         if (selected <= today) { 
+            console.log(today)
             setSelectedDate(day.dateString);
             navigation.navigate("Mood", { selectedDate: day.dateString });
         } else {
@@ -66,12 +67,9 @@ const CalendarMood = () => {
     return (
         <View style={styles.container}>
                 <View style={styles.headerContainer}>
-                    <TouchableOpacity onPress={() => navigation.navigate("CalendarMood")}>
+                    <TouchableOpacity onPress={() => navigation.navigate("Home")}>
                         <AntDesign name="left" size={22} color="#3F3C3C" />
                     </TouchableOpacity>
-                    <Text style={styles.calendar}>
-                    {selectedDate ? moment(selectedDate).format('dddd, MMMM D') : ''}
-                    </Text>
                     <AntDesign name="left" size={22} color="transparent" />
                 </View>
             
@@ -79,6 +77,7 @@ const CalendarMood = () => {
             <Calendar
                 onDayPress={handleDayPress}
                 markedDates={moodData}
+                maxDate={new Date().toISOString().split('T')[0]}
             />
         </View>
         </View>
