@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, TextInput, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-const TypicalCycle = () => {
+const PeriodUsuallyLast = () => {
     const navigation = useNavigation();
     const [cycleLength, setCycleLength] = useState('');
 
@@ -10,7 +10,7 @@ const TypicalCycle = () => {
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => { });
 
         const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => { });
-
+  
         return () => {
             keyboardDidShowListener.remove();
             keyboardDidHideListener.remove();
@@ -18,50 +18,45 @@ const TypicalCycle = () => {
     }, []);
 
     const handleNext = () => {
-        if (cycleLength.length === 2) {
-            navigation.navigate("PeriodUsuallyLast", { cycleLength });
-            console.log(cycleLength);
-        }
+        navigation.navigate("PeriodScreen", { cycleLength });
+        console.log(cycleLength);
     };
-
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <View style={styles.container}>
                 <View style={styles.headerContainer}>
                     <Text style={styles.headerText}>
-                        How long is your{'\n'} typical cycle
+                        How long dose your{'\n'}period usually last?
                     </Text>
 
                     <View style={styles.separator}></View>
 
                     <TextInput
                         style={[styles.input, { textAlign: 'center' }]}
-                        placeholder="Enter cycle length"
+                        placeholder="Enter your period usually last"
                         keyboardType="numeric"
                         maxLength={2}
                         value={cycleLength}
                         onChangeText={text => {
-                            if (text.length === 2) {
+                            if (text.length === 1) {
                                 Keyboard.dismiss();
                             }
                             setCycleLength(text);
                         }}
                     />
 
-
                     <View style={styles.separator}></View>
 
                     <Text style={styles.text}>
-                        Your cycle starts on the first day of your period and ends
-                        {'\n'} the day before your next period. Estimating your cycle length{'\n'}helps enable period predictions.
+                    Period length is measured from the fist to the last day{'\n'}of bleeding.
                     </Text>
 
                     <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
                         <Text style={styles.nextButtonText}>Next</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => navigation.navigate("LastPeriod")}>
+                    <TouchableOpacity onPress={() => navigation.navigate("TypicalCycle")}>
                         <Text style={styles.cancelButtonText}>
                             Cancel
                         </Text>
@@ -135,4 +130,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default TypicalCycle;
+export default PeriodUsuallyLast;

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, ImageBackground } from 'react-native';
+import { View, TouchableOpacity, StyleSheet} from 'react-native';
 import { Calendar, CalendarList } from 'react-native-calendars';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { firestore } from "../firebaseConfig";
@@ -18,7 +18,7 @@ const CalendarMood = () => {
         const moodDataFromFirebase = {};
         snapshot.forEach((doc) => {
             const { date, mood } = doc.data();
-            moodDataFromFirebase[date] = { selected: true, marked: true, selectedColor: getColorByMood(mood) };
+            moodDataFromFirebase[date] = { selected: true, selectedColor: getColorByMood(mood) };
         });
         setMoodData(moodDataFromFirebase);
     };
@@ -53,7 +53,6 @@ const CalendarMood = () => {
     const handleDayPress = (day) => {
         const today = new Date();
         const selected = new Date(day.dateString);
-        today.setHours(today.getHours()+7)
         
         if (selected <= today) { 
             console.log(today)

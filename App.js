@@ -10,6 +10,8 @@ import Mood from './Screen/Mood';
 import CalendarMood from './Screen/CalendarMood';
 import LastPeriod from './Screen/LastPeriod';
 import TypicalCycle from './Screen/TypicalCycle';
+import PeriodUsuallyLast from './Screen/PeriodUsuallyLast';
+import PeriodScreen from './Screen/PeriodScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -25,6 +27,8 @@ const App =() =>{
       <Stack.Screen name= "CalendarMood" component={CalendarMood}/>
       <Stack.Screen name= "LastPeriod" component={LastPeriod}/>
       <Stack.Screen name= "TypicalCycle" component={TypicalCycle}/>
+      <Stack.Screen name= "PeriodUsuallyLast" component={PeriodUsuallyLast}/>
+      <Stack.Screen name= "PeriodScreen" component={PeriodScreen}/>
       </Stack.Navigator>
     </NavigationContainer>
   )
