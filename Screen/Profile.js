@@ -10,24 +10,23 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Icon from "react-native-vector-icons/FontAwesome";
-import AsyncStorage from "@react-native-async-storage/async-storage"; // นำเข้า AsyncStorage
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { firestore } from "../firebaseConfig";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { collection, doc, getDocs ,query,where} from "firebase/firestore";
+import { signedOut } from '../api/Authentication';
 
 const Profile = ({ navigation }) => {
-  const [userData, setUserData] = useState(null);
-  const [checkuser, setCheckuser] = useState(null);
+  const [userData, setUserData] = useState({email:"",firstname:"",surname:"",weight:"",height:""});
 
   useEffect(() => {
     const getUserAccount = async () => {
       try {
-        const userAccount = await AsyncStorage.getItem("useraccount"); // Retrieve user account data from AsyncStorage
+        const userAccount = await AsyncStorage.getItem("useraccount");
         if (userAccount !== null) {
           console.log("User Account:", userAccount);
-          // Extract user ID from user account data (replace this with your logic)
           await fetchUserData(userAccount);
-          // Fetch user data using the extracted user ID
-          // fetchUserData(userId);
+        } else {
+          // Handle the case where user account is not found
         }
       } catch (error) {
         console.error("Error getting user account:", error);
@@ -38,52 +37,54 @@ const Profile = ({ navigation }) => {
   }, []);
 
   const fetchUserData = async (checkuser) => {
+    console.log(checkuser);
     try {
-      const querySnapshot = await getDocs(
-        query(
-          collection(firestore, "testuser"),
-          where("email", "==", checkuser)
-        )
-      );
-  
-      if (querySnapshot.empty) {
-        alert("No user found with the provided email");
-      } else {
-        querySnapshot.forEach((doc) => {
-          const data = doc.data();
-          setUserData(data);
-          console.log(
-            "firstname:", data.firstname,
-            "surname:", data.surname,
-            "email:", data.email
-          );
-        });
-        console.log("User sign-in successful");
-        // navigation.navigate("HomeScreen");
-      }
-    } catch (err) {
-      console.error("SignIn failed", err.message);
-    }
-  };
+        const querySnapshot = await getDocs(query(collection(firestore, "testuser"), where("email", "==", checkuser)));
 
-  const handleGoBack = () => {
-    Alert.alert(
-      "Confirmation",
-      "Are you sure you want to go back to the login screen?",
-      [
-        {
-          text: "Cancel",
-          onPress: () => console.log("Cancel Pressed"),
-          style: "cancel",
-        },
-        {
-          text: "OK",
-          onPress: () => navigation.navigate("LoginView"), // navigate back to login screen
-        },
-      ],
-      { cancelable: false }
-    );
-  };
+        querySnapshot.forEach((doc) => {
+            console.log(doc.id, " => ", doc.data());
+            const userData = doc.data();
+            // ตรวจสอบว่าฟิลด์ email หรือชื่อฟิลด์ที่ใช้เกี่ยวกับอีเมล์มีชื่ออะไร
+            // และใช้ชื่อนั้นในการเข้าถึงค่าอีเมล์
+            const userEmail = userData.email;
+            console.log("email:", userEmail);
+            setUserData((prevUserData) => ({
+              ...prevUserData,
+              email: userData.email,
+              firstname :userData.firstname,
+              surname :userData.surname,
+              weight :userData.weight,
+              height :userData.height
+            }));
+            // ทำสิ่งที่คุณต้องการกับข้อมูลที่ได้รับ เช่น การตั้งค่า state หรือการทำงานอื่น ๆ ที่คุณต้องการดำเนินการต่อไปกับข้อมูลผู้ใช้ที่ได้รับจาก Firestore
+        });
+
+    } catch (err) {
+        console.error("Error fetching user data:", err.message);
+    }
+};
+
+
+  
+
+const Logout = () => {
+  Alert.alert(
+    "Confirmation",
+    "Are you sure you want to go back to the login screen?",
+    [
+      {
+        text: "Cancel",
+        onPress: () => console.log("Cancel Pressed"),
+        style: "cancel",
+      },
+      {
+        text: "OK",
+        onPress: () => { signedOut(); navigation.navigate("LoginView"); },
+      },
+    ],
+    { cancelable: false }
+  );
+};
 
   return (
     <ImageBackground
@@ -92,7 +93,7 @@ const Profile = ({ navigation }) => {
     >
       <View style={styles.container}>
         <View style={styles.iconleft}>
-          <TouchableOpacity onPress={handleGoBack}>
+          <TouchableOpacity onPress={Logout}>
             <Icon name="arrow-left" size={30} color="black" />
           </TouchableOpacity>
         </View>
@@ -105,7 +106,7 @@ const Profile = ({ navigation }) => {
         </View>
         <View style={styles.name}>
           <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>
-            @{userData?.firstname || 'Loading...'}
+            @{userData?.firstname || "Loading..."}
           </Text>
         </View>
 
@@ -114,9 +115,8 @@ const Profile = ({ navigation }) => {
             <Text style={[styles.text, { fontWeight: "200", fontSize: 28 }]}>
               Name
             </Text>
-
             <Text style={[styles.text, { fontWeight: "200", fontSize: 24 }]}>
-              {userData?.firstname|| 'Loading...'} {userData?.surname}
+              {userData?.firstname || "Loading..."} {userData?.surname}
             </Text>
           </View>
 
@@ -124,25 +124,23 @@ const Profile = ({ navigation }) => {
             <Text style={[styles.text, { fontWeight: "200", fontSize: 28 }]}>
               E-mail
             </Text>
-
             <Text style={[styles.text, { fontWeight: "200", fontSize: 24 }]}>
-              {userData?.email|| 'Loading...'}
+              {userData?.email || "Loading..."}
             </Text>
           </View>
 
           <View style={styles.information}>
             <Text style={[styles.text, { fontWeight: "200", fontSize: 28 }]}>
-              Weight/Height
+              Height/Weight
             </Text>
-
             <Text style={[styles.text, { fontWeight: "200", fontSize: 24 }]}>
-              50/160
+              {userData?.height || "Loading..."}/{userData?.weight}
             </Text>
           </View>
 
           <LinearGradient colors={["#FDB5CD", "#D2D5F8"]} style={styles.button}>
-            <TouchableOpacity onPress={""}>
-              <Text style={styles.buttonText}>Edit</Text>
+            <TouchableOpacity onPress={() => navigation.navigate("EditUser")}>
+              <Text style={styles.buttonText}>Update</Text>
             </TouchableOpacity>
           </LinearGradient>
         </View>

@@ -8,6 +8,7 @@ import SplashScreen from './Screen/Splashscreen';
 import Home from './Screen/Home';
 import Mood from './Screen/Mood';
 import Profile from './Screen/Profile';
+import EditUser from './Screen/EditUser';
 import { onAuthStateChanged, getAuth, User } from 'firebase/auth'; // Import getAuth
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -15,6 +16,7 @@ const Stack = createNativeStackNavigator();
 
 const App =() =>{
   const [User, setUser] = useState(User || null);
+  
   useEffect(()=>{
     const auth = getAuth(); // Initialize auth
     onAuthStateChanged(auth, async(user) => { // Use auth
@@ -39,6 +41,7 @@ const App =() =>{
         <Stack.Screen name= "Home" component={Home}/>
         <Stack.Screen name= "Mood" component={Mood}/>
         <Stack.Screen name= "Profile" component={Profile}/>
+        <Stack.Screen name= "EditUser" component={EditUser}/>
       </Stack.Navigator>
     </NavigationContainer>
   )

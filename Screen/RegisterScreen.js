@@ -5,47 +5,34 @@ import { StatusBar } from 'expo-status-bar';
 import { CreateUser } from '../api/Authentication';
 import { firestore } from "../firebaseConfig";
 import { addDoc, collection } from 'firebase/firestore';
+import { createUserWithEmailAndPassword, updateCurrentUser } from 'firebase/auth';
 
 const RegisterScreen = ({ navigation }) => {
   const [firstname, setFirstname] = useState('');
   const [surname, setSurname] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [weight, setWeight] = useState('');
+  const [height, setHeight] = useState('');
 
   // States for border colors
   const [firstnameBorderColor, setFirstnameBorderColor] = useState('transparent');
   const [surnameBorderColor, setSurnameBorderColor] = useState('transparent');
   const [emailBorderColor, setEmailBorderColor] = useState('transparent');
   const [passwordBorderColor, setPasswordBorderColor] = useState('transparent');
+  const [weightBorderColor, setWeightBorderColor] = useState('transparent');
+  const [heightBorderColor, setHeightBorderColor] = useState('transparent');
 
-  const handleRegister = async() => {
+  const handleRegister = async () => {
     // Set border color states based on input validation
-    CreateUser(user,pass)
+    CreateUser(email, password, firstname, surname, weight, height);
     setFirstnameBorderColor(firstname.trim() === '' ? 'red' : 'transparent');
     setSurnameBorderColor(surname.trim() === '' ? 'red' : 'transparent');
     setEmailBorderColor(email.trim() === '' ? 'red' : 'transparent');
     setPasswordBorderColor(password.trim() === '' ? 'red' : 'transparent');
+    setWeightBorderColor(weight.trim() === '' ? 'red' : 'transparent');
+    setHeightBorderColor(height.trim() === '' ? 'red' : 'transparent');
 
-    // Check if any field is empty
-    if (!firstname || !surname || !email || !password) {
-      // Display an alert if any field is empty
-    } else {
-        try {
-            if (firstname && surname !== "") {
-                await addDoc(collection(firestore, "testuser"), {
-                    firstname: firstname,
-                    surname: surname,
-                    email: email
-                });
-                console.log('User has been added to Firestore!');
-            } else {
-                console.error('No User selected or date is missing');
-            }
-        } catch (err) {
-            console.error('User error', err);
-        }
-
-    }
   };
 
   return (
@@ -65,6 +52,18 @@ const RegisterScreen = ({ navigation }) => {
         placeholder="Surname"
 
         onChangeText={(text) => setSurname(text)}
+      />
+      <TextInput
+        style={[styles.input, { borderColor: weightBorderColor }]}
+        placeholder="Weight"
+
+        onChangeText={(text) => setWeight(text)}
+      />
+            <TextInput
+        style={[styles.input, { borderColor: heightBorderColor }]}
+        placeholder="Height"
+
+        onChangeText={(text) => setHeight(text)}
       />
       <TextInput
         style={[styles.input, { borderColor: emailBorderColor }]}
