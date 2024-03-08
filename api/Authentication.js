@@ -4,7 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { collection, doc, addDoc } from "firebase/firestore";
 
 
-export const CreateUser = async (email, password, firstname, surname, weight, height) => {
+export const CreateUser = async (navigation,email, password, firstname, surname, weight, height) => {
   try {
     // สร้างผู้ใช้ใน Authentication
     await createUserWithEmailAndPassword(auth, email, password);
@@ -20,12 +20,15 @@ export const CreateUser = async (email, password, firstname, surname, weight, he
     });
     
     console.log("User data added to Firestore with ID: ", docRef.id);
-    navigation.navigate("LoginView")
+    alert("Register success!");
+    navigation.navigate("LoginView");
   } catch (e) {
     if (e.code === "auth/email-already-in-use") {
       console.log("That email address is already in use!");
+      alert("That email address is already in use!");
     } else if (e.code === "auth/invalid-email") {
       console.log("That email address is invalid!");
+      alert("That email address is invalid!");
     } else {
       console.error("CreateUserError: " + e.message);
     }
