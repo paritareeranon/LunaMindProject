@@ -47,7 +47,7 @@ const EditUser = ({ navigation }) => {
       // Handle error fetching user data
     }
   };
-
+  //========================================================== save to firestore function not real time ================================================
   const handleUpdate = async () => {
     try {
       const userAccount = await AsyncStorage.getItem("useraccount");
@@ -65,7 +65,7 @@ const EditUser = ({ navigation }) => {
               height: height
             });
             Alert.alert("Success", "User data updated successfully!");
-            navigation.navigate("Profile")
+            navigation.navigate("Home")
           } catch (updateError) {
             console.error("Error updating document:", updateError);
             Alert.alert("Error", "Failed to update user data. Please try again later.");
@@ -79,7 +79,45 @@ const EditUser = ({ navigation }) => {
       Alert.alert("Error", "Failed to update user data. Please try again later.");
     }
   };
+  // ========================================================== save to firestore function not real time ================================================
+
+
+
+  // const handleUpdate = async () => {
+  //   try {
+  //     const userAccount = await AsyncStorage.getItem("useraccount");
+  //     if (userAccount) {
+  //       const querySnapshot = await getDocs(
+  //         query(collection(firestore, "testuser"), where("email", "==", userAccount))
+  //       );
   
+  //       const updatePromises = []; // Array to store update promises
+  
+  //       querySnapshot.forEach((documentSnapshot) => {
+  //         const docRef = doc(firestore, "testuser", documentSnapshot.id);
+  //         const updatePromise = updateDoc(docRef, {
+  //           firstname: firstname,
+  //           surname: surname,
+  //           weight: weight,
+  //           height: height
+  //         });
+  //         updatePromises.push(updatePromise); // Store the update promise
+  //       });
+  
+  //       // Wait for all update operations to complete
+  //       await Promise.all(updatePromises);
+  
+  //       // Show success alert and navigate to Home screen
+  //       Alert.alert("Success", "User data updated successfully!");
+  //       navigation.navigate("Profile");
+  //     } else {
+  //       Alert.alert("Error", "User account not found.");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error updating user data:", error);
+  //     Alert.alert("Error", "Failed to update user data. Please try again later.");
+  //   }
+  // };
   
 
   return (
@@ -145,7 +183,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     paddingHorizontal: 10,
     alignSelf: "center",
-    borderWidth: 1,
   },
   button: {
     width: "80%",

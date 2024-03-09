@@ -64,9 +64,6 @@ const Profile = ({ navigation }) => {
     }
 };
 
-
-  
-
 const Logout = () => {
   Alert.alert(
     "Confirmation",
@@ -93,7 +90,7 @@ const Logout = () => {
     >
       <View style={styles.container}>
         <View style={styles.iconleft}>
-          <TouchableOpacity onPress={Logout}>
+          <TouchableOpacity onPress={""}>
             <Icon name="arrow-left" size={30} color="black" />
           </TouchableOpacity>
         </View>
@@ -140,7 +137,12 @@ const Logout = () => {
 
           <LinearGradient colors={["#FDB5CD", "#D2D5F8"]} style={styles.button}>
             <TouchableOpacity onPress={() => navigation.navigate("EditUser")}>
-              <Text style={styles.buttonText}>Update</Text>
+              <Text style={styles.buttonText}>Edit Userprofile</Text>
+            </TouchableOpacity>
+          </LinearGradient>
+          <LinearGradient colors={["#FDB5CD", "#D2D5F8"]} style={styles.button}>
+            <TouchableOpacity onPress={(Logout)}>
+              <Text style={styles.buttonText}>Log out</Text>
             </TouchableOpacity>
           </LinearGradient>
         </View>
@@ -209,9 +211,8 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   iconleft: {
-    alignSelf: "left",
-    marginleft: "20",
-  },
+    marginRight:"80%"
+      },
 });
 
 export default Profile;
