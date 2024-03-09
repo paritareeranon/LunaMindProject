@@ -84,8 +84,9 @@ const Logout = () => {
 };
 
   return (
-    <ImageBackground
-      source={require("../img/ProfileScreen.png")}
+    <LinearGradient
+    colors={['#D2D5F8', '#FDB5CD', '#F5F5F5']}
+    locations={[0, 0.5, 0.5]}
       style={styles.background}
     >
       <View style={styles.container}>
@@ -147,7 +148,7 @@ const Logout = () => {
           </LinearGradient>
         </View>
       </View>
-    </ImageBackground>
+    </LinearGradient>
   );
 };
 
