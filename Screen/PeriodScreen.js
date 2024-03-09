@@ -1,70 +1,87 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Calendar } from 'react-native-calendars';
+import { firestore } from "../firebaseConfig";
+import { collection, getDocs } from 'firebase/firestore';
 
 const PeriodScreen = () => {
     const navigation = useNavigation();
     const [selectedDate, setSelectedDate] = useState('');
+    const [typicalPeriodLength, setTypicalPeriodLength] = useState('');
+    const [typicalCycleLength, setTypicalCycleLength] = useState('');
+    const [periodData, setPeriodData] = useState(null);
+
+
+    useEffect(() => {
+        const fetchPeriodData = async () => {
+            try {
+                const periodCollectionRef = collection(firestore, 'testPeriod');
+                const snapshot = await getDocs(periodCollectionRef);
+
+                const data = {};
+                snapshot.forEach(doc => {
+                    data[doc.id] = doc.data();
+                });
+
+                setPeriodData(data);
+            } catch (error) {
+                console.error('Error fetching period data:', error);
+            }
+        };
+
+        fetchPeriodData();
+    }, []);
 
     const handleDayPress = (day) => {
-        const today = new Date();
-        const selected = new Date(day.dateString);
-
-        if (selected <= today) {
-            setSelectedDate(day.dateString);
-        } else {
-            console.log("Cannot select future dates");
-        }
+        setSelectedDate(day.dateString);
     };
-
-    const handleNext = () => {
-        if (selectedDate) {
-            navigation.navigate("TypicalCycle", { selectedDate });
-            console.log(selectedDate);
-        } else {
-            console.log("Please select a date first");
-        }
-    };
-
-
 
     return (
         <View style={styles.container}>
             <View style={styles.headerContainer}>
                 <Text style={styles.headerText}>
-                    When did your last{'\n'}  period start
+                    Cycle Tracking
                 </Text>
+                <Button title="Go to CalendarMood" color="red" onPress={() => navigation.navigate('Home')} />
 
                 <View style={styles.separator}></View>
 
-                <View style={styles.calendar}>
-                    <Calendar
-                        onDayPress={handleDayPress}
-                        markedDates={{
-                            [selectedDate]: { selected: true, selectedColor: '#FF80B5' }
-                        }}
-                        maxDate={new Date().toISOString().split('T')[0]}
-                        theme={{
-                            arrowColor: '#FF80B5',
-                        }}
-                    />
-                </View>
-
-                <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
-                    <Text style={styles.nextButtonText}>Next</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity onPress={() => navigation.navigate("Home")}>
-                    <Text style={styles.cancelButtonText}>
-                        Cancel
-                    </Text>
-                </TouchableOpacity>
+                <Calendar
+                    onDayPress={handleDayPress}
+                    markedDates={{
+                        [selectedDate]: { selected: true, selectedColor: '#FF80B5' }
+                    }}
+                    maxDate={new Date().toISOString().split('T')[0]}
+                    theme={{
+                        arrowColor: '#FF80B5',
+                    }}
+                />
             </View>
+            <View style={styles.bottomSeparator}></View>
+
+            <Text style={styles.headerText}>
+                Summary
+            </Text>
+
+            <Text style={styles.headerText}>
+                Typical Period Length: {typicalPeriodLength}
+            </Text>
+
+            <Text>
+                Typical Cycle Length: {typicalCycleLength}
+            </Text>
+            {periodData && Object.keys(periodData).map(key => (
+                <View key={key}>
+                    <Text style={styles.text}>Last Period: {periodData[key].LastPeriod}</Text>
+                    <Text style={styles.text}>Period Usually Last: {periodData[key].PeriodUsuallyLast} day</Text>
+                    <Text style={styles.text}>Typical Cycle: {periodData[key].TypicalCycle} day</Text>
+                    </View>
+            ))}
         </View>
+
     );
 }
-
 
 const styles = StyleSheet.create({
     container: {
@@ -72,24 +89,19 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
     },
     headerContainer: {
-        paddingTop: 50,
+        // paddingTop: 50,
     },
     headerText: {
-        fontSize: 20,
-        paddingTop: 60,
+        fontSize: 18,
+        paddingTop: '20%',
         color: 'black',
         fontFamily: 'Gill Sans',
         alignSelf: 'center',
         textAlign: 'center'
     },
-    calendar: {
-        paddingTop: 10,
-        paddingHorizontal: 20,
-    },
     nextButton: {
         backgroundColor: '#FF80B5',
         width: '80%',
-        paddingHorizontal: 20,
         paddingVertical: 15,
         borderRadius: 35,
         alignItems: 'center',
@@ -114,7 +126,15 @@ const styles = StyleSheet.create({
         height: 1,
         width: '100%',
         backgroundColor: '#D9D9D9',
-        marginVertical: 30,
+        marginVertical: '5%',
+    },
+    bottomSeparator: {
+        position: 'absolute',
+        bottom: '38%',
+        left: 0,
+        right: 0,
+        height: 1,
+        backgroundColor: '#D9D9D9',
     },
 });
 

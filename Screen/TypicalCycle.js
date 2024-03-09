@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, TextInput, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-const TypicalCycle = () => {
+const TypicalCycle = ({ route }) => {
     const navigation = useNavigation();
     const [cycleLength, setCycleLength] = useState('');
 
@@ -19,7 +19,7 @@ const TypicalCycle = () => {
 
     const handleNext = () => {
         if (cycleLength.length === 2) {
-            navigation.navigate("PeriodUsuallyLast", { cycleLength });
+            navigation.navigate("PeriodUsuallyLast", { selectedDate: route.params.selectedDate, cycleLength });
             console.log(cycleLength);
         }
     };

@@ -21,13 +21,11 @@ const LastPeriod = () => {
     const handleNext = () => {
         if (selectedDate) {
             navigation.navigate("TypicalCycle", { selectedDate });
-            console.log(selectedDate);
+            console.log("Last: ",selectedDate);
         } else {
             console.log("Please select a date first");
         }
     };
-
-
 
     return (
         <View style={styles.container}>
@@ -64,8 +62,6 @@ const LastPeriod = () => {
         </View>
     );
 }
-
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,

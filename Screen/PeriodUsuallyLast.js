@@ -1,16 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, TextInput, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { collection, addDoc } from 'firebase/firestore';
+import { firestore } from "../firebaseConfig";
 
-const PeriodUsuallyLast = () => {
+
+const PeriodUsuallyLast = ({ route }) => {
+
+    const { selectedDate, cycleLength } = route.params;
     const navigation = useNavigation();
-    const [cycleLength, setCycleLength] = useState('');
+    const [periodUsuallyLast, setperiodUsuallyLast] = useState('');
 
     useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => { });
 
         const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => { });
-  
+
         return () => {
             keyboardDidShowListener.remove();
             keyboardDidHideListener.remove();
@@ -18,8 +23,30 @@ const PeriodUsuallyLast = () => {
     }, []);
 
     const handleNext = () => {
-        navigation.navigate("PeriodScreen", { cycleLength });
-        console.log(cycleLength);
+        if (periodUsuallyLast) {
+            saveDataToFirestore(selectedDate, cycleLength, periodUsuallyLast);
+        } else {
+            console.log("Please enter period usually last");
+        }
+    };
+    
+
+    const saveDataToFirestore = async (selectedDate, cycleLength, periodUsuallyLast) => {
+        console.log("periodUsuallyLast: ", periodUsuallyLast);
+        console.log("cycleLength: ", cycleLength);
+        console.log("selectedDate: ", selectedDate);
+        try {
+            const docRef = await addDoc(collection(firestore, 'testPeriod'), {
+                LastPeriod: selectedDate,
+                PeriodUsuallyLast: periodUsuallyLast,
+                TypicalCycle: cycleLength
+            });
+            console.log('Document written with ID: ', docRef.id);
+            navigation.navigate("PeriodScreen", { periodUsuallyLast });
+
+        } catch (error) {
+            console.error('Error adding document: ', error);
+        }
     };
 
     return (
@@ -37,19 +64,19 @@ const PeriodUsuallyLast = () => {
                         placeholder="Enter your period usually last"
                         keyboardType="numeric"
                         maxLength={2}
-                        value={cycleLength}
+                        value={periodUsuallyLast}
                         onChangeText={text => {
                             if (text.length === 1) {
                                 Keyboard.dismiss();
                             }
-                            setCycleLength(text);
+                            setperiodUsuallyLast(text);
                         }}
                     />
 
                     <View style={styles.separator}></View>
 
                     <Text style={styles.text}>
-                    Period length is measured from the fist to the last day{'\n'}of bleeding.
+                        Period length is measured from the fist to the last day{'\n'}of bleeding.
                     </Text>
 
                     <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
