@@ -7,8 +7,7 @@ import { firestore } from "../firebaseConfig";
 const Home = () => {
   const navigation = useNavigation();
   const [hasEmptyLastPeriod, setHasEmptyLastPeriod] = useState(false);
-
-
+    
   const checkPeriodData = async () => {
     try {
       const periodCollectionRef = collection(firestore, 'testPeriod');
@@ -58,6 +57,11 @@ const Home = () => {
       <Button title="Go to Last period" color="red" onPress={() => navigation.navigate('LastPeriod')} />
       <Button title="Go to PeriodScreen" color="red" onPress={() => navigation.navigate('PeriodScreen')} />
       <Button title="Check" color="green" onPress={handleCheck} />
+      <Button
+        title="Profile"
+        color="red"
+        onPress={() => navigation.navigate("Profile")}
+      />
     </View>
   );
 };

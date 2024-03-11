@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, TextInput, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { collection, addDoc } from 'firebase/firestore';
+import { collection, addDoc, setDoc, getDoc, doc } from 'firebase/firestore';
 import { firestore } from "../firebaseConfig";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const PeriodUsuallyLast = ({ route }) => {
@@ -29,26 +30,36 @@ const PeriodUsuallyLast = ({ route }) => {
             console.log("Please enter period usually last");
         }
     };
-    
+
 
     const saveDataToFirestore = async (selectedDate, cycleLength, periodUsuallyLast) => {
         console.log("periodUsuallyLast: ", periodUsuallyLast);
         console.log("cycleLength: ", cycleLength);
         console.log("selectedDate: ", selectedDate);
         try {
-            const docRef = await addDoc(collection(firestore, 'testPeriod'), {
+            const email = await AsyncStorage.getItem("useraccount");
+            const colRef = collection(firestore, 'UserInfo');
+            const docRef = doc(colRef, email);
+            const subColRef = collection(docRef, "period");
+    
+            const monthName = selectedDate.toLocaleString('default', { month: 'long' });
+    
+            const subDocRef = doc(subColRef, monthName);
+            await setDoc(subDocRef, {
                 LastPeriod: selectedDate,
                 PeriodUsuallyLast: periodUsuallyLast,
                 TypicalCycle: cycleLength
             });
-            console.log('Document written with ID: ', docRef.id);
-            navigation.navigate("PeriodScreen", { periodUsuallyLast });
+            console.log(`${monthName} cycle information added successfully!`);
+            console.log(selectedDate);
 
+            navigation.navigate("PeriodScreen", { selectedDate });
+    
         } catch (error) {
             console.error('Error adding document: ', error);
         }
     };
-
+    
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <View style={styles.container}>

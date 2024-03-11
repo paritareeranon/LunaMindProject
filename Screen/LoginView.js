@@ -24,9 +24,10 @@ const LoginView = () => {
   //   setEmail('');
   //   setPassword('');
   // };
+  
   const handleSignIn = async (user, pass) => {
     try {
-      const check = await UserAuth("parii@gmail.com", "123456");
+      const check = await UserAuth(email,password);
       console.log(check.message);
       if (check.status === false) {
         if (check.message === "auth/invalid-email") {

@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Button } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native'; 
 import { Calendar } from 'react-native-calendars';
 import { firestore } from "../firebaseConfig";
 import { collection, getDocs } from 'firebase/firestore';
 
-const PeriodScreen = () => {
+
+const PeriodScreen = ({ route }) => {
     const navigation = useNavigation();
-    const [selectedDate, setSelectedDate] = useState('');
+    // const route = useRoute(); // เรียกใช้ useRoute เพื่อดึง route.params
+    const { selectedDate } = route.params || {}; // ดึงค่า selectedDate จาก route.params
     const [typicalPeriodLength, setTypicalPeriodLength] = useState('');
     const [typicalCycleLength, setTypicalCycleLength] = useState('');
     const [periodData, setPeriodData] = useState(null);
-
 
     useEffect(() => {
         const fetchPeriodData = async () => {
@@ -33,9 +34,9 @@ const PeriodScreen = () => {
         fetchPeriodData();
     }, []);
 
-    const handleDayPress = (day) => {
-        setSelectedDate(day.dateString);
-    };
+    // const handleDayPress = (day) => {
+    //     setSelectedDate(day.dateString);
+    // };
 
     return (
         <View style={styles.container}>
@@ -48,9 +49,8 @@ const PeriodScreen = () => {
                 <View style={styles.separator}></View>
 
                 <Calendar
-                    onDayPress={handleDayPress}
                     markedDates={{
-                        [selectedDate]: { selected: true, selectedColor: '#FF80B5' }
+                        [selectedDate]: { selected: true, selectedColor: 'red' }
                     }}
                     maxDate={new Date().toISOString().split('T')[0]}
                     theme={{
@@ -76,10 +76,9 @@ const PeriodScreen = () => {
                     <Text style={styles.text}>Last Period: {periodData[key].LastPeriod}</Text>
                     <Text style={styles.text}>Period Usually Last: {periodData[key].PeriodUsuallyLast} day</Text>
                     <Text style={styles.text}>Typical Cycle: {periodData[key].TypicalCycle} day</Text>
-                    </View>
+                </View>
             ))}
         </View>
-
     );
 }
 
