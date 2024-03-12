@@ -103,49 +103,52 @@ const Logout = () => {
           />
         </View>
         <View style={styles.name}>
-          <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>
+          <Text style={[styles.text, { fontWeight: "300", fontSize: 36 ,color:"#3F3C3C"}]}>
             @{userData?.firstname || "Loading..."}
           </Text>
         </View>
 
         <View style={styles.profilecard}>
           <View style={styles.information}>
-            <Text style={[styles.text, { fontWeight: "200", fontSize: 28 }]}>
+            <Text style={[styles.text, { fontWeight: "300", fontSize: 26 ,color:"#3F3C3C"}]}>
               Name
             </Text>
-            <Text style={[styles.text, { fontWeight: "200", fontSize: 24 }]}>
+            <Text style={[styles.text, { fontWeight: "300", fontSize: 24 ,color:"#B7B7B7"}]}>
               {userData?.firstname || "Loading..."} {userData?.surname}
             </Text>
           </View>
 
           <View style={styles.information}>
-            <Text style={[styles.text, { fontWeight: "200", fontSize: 28 }]}>
+            <Text style={[styles.text, { fontWeight: "300", fontSize: 26 ,color:"#3F3C3C"}]}>
               E-mail
             </Text>
-            <Text style={[styles.text, { fontWeight: "200", fontSize: 24 }]}>
+            <Text style={[styles.text, { fontWeight: "300", fontSize: 24 ,color:"#B7B7B7" }]}>
               {userData?.email || "Loading..."}
             </Text>
           </View>
 
           <View style={styles.information}>
-            <Text style={[styles.text, { fontWeight: "200", fontSize: 28 }]}>
+            <Text style={[styles.text, { fontWeight: "300", fontSize: 26 ,color:"#3F3C3C"}]}>
               Height/Weight
             </Text>
-            <Text style={[styles.text, { fontWeight: "200", fontSize: 24 }]}>
+            <Text style={[styles.text, { fontWeight: "300", fontSize: 24 ,color:"#B7B7B7"}]}>
               {userData?.height || "Loading..."}/{userData?.weight}
             </Text>
           </View>
-
-          <LinearGradient colors={["#FDB5CD", "#D2D5F8"]} style={styles.button}>
-            <TouchableOpacity onPress={() => navigation.navigate("EditUser")}>
-              <Text style={styles.buttonText}>Edit Userprofile</Text>
-            </TouchableOpacity>
-          </LinearGradient>
+          <View style={styles.infobt}>
           <LinearGradient colors={["#FDB5CD", "#D2D5F8"]} style={styles.button}>
             <TouchableOpacity onPress={(Logout)}>
-              <Text style={styles.buttonText}>Log out</Text>
+              <Text style={[styles.buttonText,{fontWeight:"500"}]}>Log out</Text>
             </TouchableOpacity>
           </LinearGradient>
+          </View>
+          <View style={styles.editbt}>
+          <LinearGradient colors={["#FDB5CD", "#D2D5F8"]} style={styles.button}>
+            <TouchableOpacity onPress={() => navigation.navigate("EditUser")}>
+              <Text style={[styles.buttonText,{fontWeight:"500"}]}>Edit Userprofile</Text>
+            </TouchableOpacity>
+          </LinearGradient>
+         </View>
         </View>
       </View>
     </LinearGradient>
@@ -160,8 +163,8 @@ const styles = StyleSheet.create({
   },
   profilecard: {
     backgroundColor: "white",
-    width: 300,
-    height: 400,
+    width: '80%',
+    height: '55%',
     borderRadius: 30,
   },
   background: {
@@ -186,9 +189,19 @@ const styles = StyleSheet.create({
   },
   information: {
     alignItems: "center",
-    padding: 10,
+    padding: 13,
     borderBottomWidth: 1,
     borderBottomColor: "lightgray",
+  },
+  infobt: {
+    alignItems: "center",
+    padding: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: "lightgray",
+  },
+  editbt: {
+    alignItems: "center",
+    padding: 15,
   },
   text: {
     marginTop: 10,
