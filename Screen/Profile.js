@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
   },
   editbt: {
     alignItems: "center",
-    paddingTop: "25%",
+    paddingTop: "22%",
   },
   text: {
     marginTop: 10,
