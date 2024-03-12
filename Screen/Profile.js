@@ -92,7 +92,7 @@ const Logout = () => {
       <View style={styles.container}>
         <View style={styles.iconleft}>
           <TouchableOpacity onPress={""}>
-            <Icon name="arrow-left" size={30} color="black" />
+            <Icon name="arrow-left" size={25} color="black" />
           </TouchableOpacity>
         </View>
         <View style={styles.profileImage}>
@@ -103,44 +103,44 @@ const Logout = () => {
           />
         </View>
         <View style={styles.name}>
-          <Text style={[styles.text, { fontWeight: "300", fontSize: 36 ,color:"#3F3C3C"}]}>
+          <Text style={[styles.text, { fontWeight: "bold", fontSize: 24 ,color:"#FFFFFF"}]}>
             @{userData?.firstname || "Loading..."}
           </Text>
         </View>
 
         <View style={styles.profilecard}>
           <View style={styles.information}>
-            <Text style={[styles.text, { fontWeight: "300", fontSize: 26 ,color:"#3F3C3C"}]}>
+            <Text style={[styles.text, { fontWeight: "bold", fontSize: 18 ,color:"#3F3C3C"}]}>
               Name
             </Text>
-            <Text style={[styles.text, { fontWeight: "300", fontSize: 24 ,color:"#B7B7B7"}]}>
+            <Text style={[styles.text, { fontWeight: "300", fontSize: 18 ,color:"#B7B7B7"}]}>
               {userData?.firstname || "Loading..."} {userData?.surname}
             </Text>
           </View>
 
           <View style={styles.information}>
-            <Text style={[styles.text, { fontWeight: "300", fontSize: 26 ,color:"#3F3C3C"}]}>
+            <Text style={[styles.text, { fontWeight: "bold", fontSize: 18 ,color:"#3F3C3C"}]}>
               E-mail
             </Text>
-            <Text style={[styles.text, { fontWeight: "300", fontSize: 24 ,color:"#B7B7B7" }]}>
+            <Text style={[styles.text, { fontWeight: "300", fontSize: 18 ,color:"#B7B7B7" }]}>
               {userData?.email || "Loading..."}
             </Text>
           </View>
 
           <View style={styles.information}>
-            <Text style={[styles.text, { fontWeight: "300", fontSize: 26 ,color:"#3F3C3C"}]}>
+            <Text style={[styles.text, { fontWeight: "bold", fontSize: 18 ,color:"#3F3C3C"}]}>
               Height/Weight
             </Text>
-            <Text style={[styles.text, { fontWeight: "300", fontSize: 24 ,color:"#B7B7B7"}]}>
+            <Text style={[styles.text, { fontWeight: "300", fontSize: 18 ,color:"#B7B7B7"}]}>
               {userData?.height || "Loading..."}/{userData?.weight}
             </Text>
           </View>
           <View style={styles.infobt}>
-          <LinearGradient colors={["#FDB5CD", "#D2D5F8"]} style={styles.button}>
+          <View colors={["#FDB5CD", "#D2D5F8"]} style={styles.button}>
             <TouchableOpacity onPress={(Logout)}>
-              <Text style={[styles.buttonText,{fontWeight:"500"}]}>Log out</Text>
+              <Text style={[styles.buttonText,{fontWeight:"500",color:"#5CA3FF"}]}>Log Out</Text>
             </TouchableOpacity>
-          </LinearGradient>
+          </View>
           </View>
           <View style={styles.editbt}>
           <LinearGradient colors={["#FDB5CD", "#D2D5F8"]} style={styles.button}>
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
   },
   profilecard: {
     backgroundColor: "white",
-    width: '80%',
+    width: '75%',
     height: '55%',
     borderRadius: 30,
   },
@@ -172,8 +172,8 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
   },
   profileImage: {
-    width: 150,
-    height: 150,
+    width: 138,
+    height: 138,
     borderRadius: 100,
     overflow: "hidden",
     borderColor: "white",
@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
   },
   editbt: {
     alignItems: "center",
-    padding: 15,
+    paddingTop: "25%",
   },
   text: {
     marginTop: 10,
@@ -209,17 +209,17 @@ const styles = StyleSheet.create({
   },
   button: {
     width: "80%",
-    paddingLeft: 15,
-    paddingRight: 15,
-    borderRadius: 35,
-    marginTop: 5,
+    paddingLeft: "15%",
+    paddingRight: "15%",
+    borderRadius: "8%",
+    marginTop: "3%",
     alignSelf: "center",
   },
   buttonText: {
     fontSize: 18,
     fontFamily: "Gill Sans",
     textAlign: "center",
-    margin: 10,
+    margin: "6%",
     color: "#ffffff",
     backgroundColor: "transparent",
     alignSelf: "center",
