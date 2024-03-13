@@ -14,7 +14,7 @@ const LoginView = () => {
     if (email === '0000' && password === '0000') {
       console.log('Signed in successfully!');
       setErrorMessage('');
-      navigation.navigate("Home");
+      navigation.navigate("NavigationBar");
     } else {
       console.log('Invalid email or password');
       setErrorMessage('Username or password you entered is incorrect. try again!');
