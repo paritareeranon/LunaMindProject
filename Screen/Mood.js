@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, ImageBackground } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useNavigation, useRoute  } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { AntDesign } from '@expo/vector-icons';
 import CustomPopup from '../Component/CustomPopup';
 import CalendarMood from './CalendarMood';
 import moment from 'moment';
 import { firestore } from "../firebaseConfig";
-import { addDoc, collection } from 'firebase/firestore';
-
+import { collection, addDoc, setDoc, getDocs, doc } from 'firebase/firestore';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Mood = () => {
     const navigation = useNavigation();
@@ -41,16 +41,76 @@ const Mood = () => {
         console.log(selectedMood, selectedDate);
         try {
             if (selectedMood !== "" && selectedDate) {
-                await addDoc(collection(firestore, "testMood"), {
+                const email = await AsyncStorage.getItem("useraccount");
+                const colRef = collection(firestore, 'UserInfo');
+                const docRef = doc(colRef, email);
+                const subColRef = collection(docRef, "mood");
+                const subDocRef = doc(subColRef, selectedDate);
+
+                await setDoc(subDocRef, {
                     mood: selectedMood,
-                    date: selectedDate
+                    date: selectedDate,
                 });
                 console.log('Mood added to Firestore!');
-            } else {
+            }
+            else {
                 console.error('No mood selected or date is missing');
             }
         } catch (err) {
             console.error('mood error', err);
+        }
+    };
+    // สร้างฟังก์ชันเพื่อตรวจสอบว่ามี mood เป็น 1 ติดต่อกัน 3 วันหรือไม่
+    const checkConsecutiveMoods = async () => {
+        try {
+            const email = await AsyncStorage.getItem("useraccount");
+            const colRef = collection(firestore, 'UserInfo');
+            const docRef = doc(colRef, email);
+            const subColRef = collection(docRef, "mood");
+
+            // ดึงข้อมูล mood ทั้งหมดจาก Firestore
+            const querySnapshot = await getDocs(subColRef);
+
+            const moods = [];
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                moods.push({
+                    date: data.date,
+                    mood: data.mood
+                });
+            });
+
+            // เรียงลำดับ mood ตามวันที่
+            moods.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+            let consecutiveCount = 0;
+
+            // ตรวจสอบ mood ติดต่อกัน
+            for (let i = 0; i < moods.length - 1; i++) {
+                const currentMood = moods[i].mood;
+                const nextMood = moods[i + 1].mood;
+                const currentDate = new Date(moods[i].date);
+                const nextDate = new Date(moods[i + 1].date);
+
+                // ตรวจสอบว่า mood เป็น 1 และวันที่ติดกัน 3 วันหรือไม่
+                if (currentMood === "1" && nextMood === "1") {
+                    const differenceInDays = Math.abs((currentDate - nextDate) / (1000 * 60 * 60 * 24));
+                    if (differenceInDays <= 3) {
+                        consecutiveCount++;
+                        // ถ้าพบ mood เป็น 1 ติดต่อกัน 3 วันขึ้นไปแล้ว ให้แสดง Popup หมายเลข 6
+                        if (consecutiveCount >= 2) {
+                            openPopup(6);
+                            break;
+                        }
+                    } else {
+                        consecutiveCount = 0;
+                    }
+                } else {
+                    consecutiveCount = 0;
+                }
+            }
+        } catch (error) {
+            console.error("Error checking consecutive moods:", error);
         }
     };
 
@@ -62,7 +122,7 @@ const Mood = () => {
                         <AntDesign name="left" size={22} color="#3F3C3C" />
                     </TouchableOpacity>
                     <Text style={styles.calendar}>
-                    {selectedDate ? moment(selectedDate).format('dddd, MMMM D') : ''}
+                        {selectedDate ? moment(selectedDate).format('dddd, MMMM D') : ''}
                     </Text>
                     <AntDesign name="left" size={22} color="transparent" />
                 </View>
@@ -158,7 +218,10 @@ const Mood = () => {
                     </View>
 
                     <View>
-                        <TouchableOpacity onPress={() => openPopup(5)}>
+                        <TouchableOpacity onPress={() => {
+                            openPopup(5);
+                            checkConsecutiveMoods();
+                        }}>
                             <Image
                                 source={require('../img/1.png')}
                                 style={styles.mood}
@@ -174,6 +237,15 @@ const Mood = () => {
                                 onOk={() => handleOk("1")}
                                 customImage={require('../img/1.png')}
                                 customText="Sending you a big virtual hug! Remember, you're never alone"
+                            />
+                        )}
+                        {currentPopup === 6 && (
+                            <CustomPopup
+                                visible={true}
+                                onClose={closePopup}
+                                onOk={() => handleOk("1")}
+                                customImage={require('../img/1.png')}
+                                customText="-------"
                             />
                         )}
                     </View>

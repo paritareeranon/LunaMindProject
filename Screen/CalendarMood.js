@@ -3,9 +3,10 @@ import { View, TouchableOpacity, StyleSheet} from 'react-native';
 import { Calendar, CalendarList } from 'react-native-calendars';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { firestore } from "../firebaseConfig";
-import { collection, getDocs } from 'firebase/firestore';
 import { AntDesign } from '@expo/vector-icons';
 import moment from 'moment';
+import { collection, addDoc, setDoc, getDocs, doc } from 'firebase/firestore';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const CalendarMood = () => {
     const [moodData, setMoodData] = useState({});
@@ -13,12 +14,15 @@ const CalendarMood = () => {
     const [selectedDate, setSelectedDate] = useState(null);
 
     const fetchMoodData = async () => {
-        const moodCollectionRef = collection(firestore, 'testMood');
-        const snapshot = await getDocs(moodCollectionRef);
+        const email = await AsyncStorage.getItem("useraccount");
+        const moodCollectionRef = collection(firestore, 'UserInfo');
+        const docRef = doc(moodCollectionRef, email);
+        const subColRef = collection(docRef, "mood");
+        const snapshot = await getDocs(subColRef);
         const moodDataFromFirebase = {};
         snapshot.forEach((doc) => {
             const { date, mood } = doc.data();
-            moodDataFromFirebase[date] = { selected: true, selectedColor: getColorByMood(mood) };
+            moodDataFromFirebase[date] = { selected: true, selectedColor: getColorByMood(mood)};
         });
         setMoodData(moodDataFromFirebase);
     };

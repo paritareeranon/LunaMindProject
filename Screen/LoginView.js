@@ -28,14 +28,14 @@ const LoginView = () => {
   const handleSignIn = async (user, pass) => {
     try {
       const check = await UserAuth(email,password);
-      console.log(check.message);
+      // console.log(check.message);
       if (check.status === false) {
         if (check.message === "auth/invalid-email") {
         } else if (check.message === "auth/missing-password") {
         } else if (check.message === "auth/invalid-credential") {
         }
       } else {
-        console.log("User sign in successful");
+        // console.log("User sign in successful");
         navigation.navigate("Home");
       }
     } catch (err) {

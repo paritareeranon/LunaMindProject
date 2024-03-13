@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Button } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native'; 
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { Calendar } from 'react-native-calendars';
 import { firestore } from "../firebaseConfig";
-import { collection, getDocs } from 'firebase/firestore';
-
+import { collection, getDocs, doc } from 'firebase/firestore';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const PeriodScreen = ({ route }) => {
     const navigation = useNavigation();
-    // const route = useRoute(); // เรียกใช้ useRoute เพื่อดึง route.params
-    const { selectedDate } = route.params || {}; // ดึงค่า selectedDate จาก route.params
+    const { selectedDate } = route.params || {};
     const [typicalPeriodLength, setTypicalPeriodLength] = useState('');
     const [typicalCycleLength, setTypicalCycleLength] = useState('');
     const [periodData, setPeriodData] = useState(null);
@@ -17,15 +16,19 @@ const PeriodScreen = ({ route }) => {
     useEffect(() => {
         const fetchPeriodData = async () => {
             try {
-                const periodCollectionRef = collection(firestore, 'testPeriod');
-                const snapshot = await getDocs(periodCollectionRef);
+                const email = await AsyncStorage.getItem("useraccount");
+                if (email) {
+                    const colRef = collection(firestore, 'UserInfo');
+                    const docRef = doc(colRef, email);
+                    const subColRef = collection(docRef, "period");
+                    const snapshot = await getDocs(subColRef);
 
-                const data = {};
-                snapshot.forEach(doc => {
-                    data[doc.id] = doc.data();
-                });
-
-                setPeriodData(data);
+                    const data = {};
+                    snapshot.forEach(doc => {
+                        data[doc.id] = doc.data();
+                    });
+                    setPeriodData(data);
+                }
             } catch (error) {
                 console.error('Error fetching period data:', error);
             }
@@ -34,9 +37,18 @@ const PeriodScreen = ({ route }) => {
         fetchPeriodData();
     }, []);
 
-    // const handleDayPress = (day) => {
-    //     setSelectedDate(day.dateString);
-    // };
+
+    const februaryData = periodData && periodData['February'];
+
+    const markedDates = {};
+
+    Object.entries(periodData).map(([month, monthData]) => {
+        const lastPeriodDate = monthData.LastPeriod;
+        const ovulationDate = monthData.OvulationDate;
+    
+        markedDates[lastPeriodDate] = { selected: true, selectedColor: '#FF80B5' };
+        markedDates[ovulationDate] = { selected: true, selectedColor: '#A8D7DA' };
+    });
 
     return (
         <View style={styles.container}>
@@ -49,35 +61,29 @@ const PeriodScreen = ({ route }) => {
                 <View style={styles.separator}></View>
 
                 <Calendar
-                    markedDates={{
-                        [selectedDate]: { selected: true, selectedColor: 'red' }
-                    }}
+                    markedDates={markedDates}
                     maxDate={new Date().toISOString().split('T')[0]}
                     theme={{
                         arrowColor: '#FF80B5',
                     }}
                 />
             </View>
+
             <View style={styles.bottomSeparator}></View>
+            <View>
+                <Text>
+                    Summary
+                </Text>
 
-            <Text style={styles.headerText}>
-                Summary
-            </Text>
-
-            <Text style={styles.headerText}>
-                Typical Period Length: {typicalPeriodLength}
-            </Text>
-
-            <Text>
-                Typical Cycle Length: {typicalCycleLength}
-            </Text>
-            {periodData && Object.keys(periodData).map(key => (
-                <View key={key}>
-                    <Text style={styles.text}>Last Period: {periodData[key].LastPeriod}</Text>
-                    <Text style={styles.text}>Period Usually Last: {periodData[key].PeriodUsuallyLast} day</Text>
-                    <Text style={styles.text}>Typical Cycle: {periodData[key].TypicalCycle} day</Text>
-                </View>
-            ))}
+                <Text>
+                    Typical Period Length: {typicalPeriodLength}
+                </Text>
+                <Text style={styles.text}>{februaryData?.PeriodUsuallyLast} day</Text>
+                <Text>
+                    Typical Cycle Length: {typicalCycleLength}
+                </Text>
+                <Text style={styles.text}>{februaryData?.TypicalCycle} day</Text>
+            </View>
         </View>
     );
 }
@@ -87,9 +93,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'white',
     },
-    headerContainer: {
-        // paddingTop: 50,
-    },
+    headerContainer: {},
     headerText: {
         fontSize: 18,
         paddingTop: '20%',

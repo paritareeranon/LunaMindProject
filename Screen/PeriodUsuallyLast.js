@@ -33,33 +33,82 @@ const PeriodUsuallyLast = ({ route }) => {
 
 
     const saveDataToFirestore = async (selectedDate, cycleLength, periodUsuallyLast) => {
-        console.log("periodUsuallyLast: ", periodUsuallyLast);
-        console.log("cycleLength: ", cycleLength);
-        console.log("selectedDate: ", selectedDate);
         try {
+            const currentDate = new Date(selectedDate);
+            const ovulationDate = new Date(currentDate);
+            ovulationDate.setDate(ovulationDate.getDate() + (cycleLength - 14));
+
+            const monthName = currentDate.toLocaleString('default', { month: 'long' });
+
+            const formattedStartDate = currentDate.toISOString().split('T')[0];
+            const formattedOvulationDate = ovulationDate.toISOString().split('T')[0];
+
             const email = await AsyncStorage.getItem("useraccount");
             const colRef = collection(firestore, 'UserInfo');
             const docRef = doc(colRef, email);
             const subColRef = collection(docRef, "period");
-    
-            const monthName = selectedDate.toLocaleString('default', { month: 'long' });
-    
             const subDocRef = doc(subColRef, monthName);
-            await setDoc(subDocRef, {
-                LastPeriod: selectedDate,
-                PeriodUsuallyLast: periodUsuallyLast,
-                TypicalCycle: cycleLength
-            });
-            console.log(`${monthName} cycle information added successfully!`);
-            console.log(selectedDate);
 
-            navigation.navigate("PeriodScreen", { selectedDate });
-    
+            await setDoc(subDocRef, {
+                LastPeriod: formattedStartDate,
+                PeriodUsuallyLast: periodUsuallyLast,
+                TypicalCycle: cycleLength,
+                OvulationDate: formattedOvulationDate
+            });
+
+            console.log(`${monthName} cycle information added successfully!`);
+            calculateNextCycleDate(currentDate, cycleLength, ovulationDate, periodUsuallyLast)
         } catch (error) {
-            console.error('Error adding document: ', error);
+            console.error('Error adding documents: ', error);
         }
     };
-    
+
+    const calculateNextCycleDate = async (selectedDate, cycleLength, ovulationDate, periodUsuallyLast) => {
+        try {
+
+            const currentDate = new Date(selectedDate);
+
+            const nextCycleDate = new Date(currentDate);
+            console.log(nextCycleDate);
+            console.log(cycleLength);
+
+            for (let i = 0; i < 12; i++) {
+                
+                nextCycleDate.setDate(nextCycleDate.getDate() + parseInt(cycleLength, 10));
+                console.log(nextCycleDate);
+
+                const ovulationDate = new Date(nextCycleDate);
+                ovulationDate.setDate(ovulationDate.getDate() - 14);
+                console.log("ovulationDate: ", ovulationDate);
+
+                const monthName = nextCycleDate.toLocaleString('default', { month: 'long' });
+
+                const formattedStartDate = nextCycleDate.toISOString().split('T')[0];
+                const formattedOvulationDate = ovulationDate.toISOString().split('T')[0];
+
+                const email = await AsyncStorage.getItem("useraccount");
+                const colRef = collection(firestore, 'UserInfo');
+                const docRef = doc(colRef, email);
+                const subColRef = collection(docRef, "period");
+                const subDocRef = doc(subColRef, monthName);
+
+                await setDoc(subDocRef, {
+                    LastPeriod: formattedStartDate,
+                    PeriodUsuallyLast: periodUsuallyLast,
+                    TypicalCycle: cycleLength,
+                    OvulationDate: formattedOvulationDate
+                });
+
+                navigation.navigate('PeriodScreen');
+            }
+
+
+        } catch (error) {
+            console.error('Error calculating next cycle date: ', error);
+        }
+    };
+
+
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <View style={styles.container}>
