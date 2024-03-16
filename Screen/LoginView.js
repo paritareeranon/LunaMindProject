@@ -4,6 +4,9 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { UserAuth } from '../api/Authentication';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { firestore } from "../firebaseConfig";
+import { collection, doc, getDocs ,query,where} from "firebase/firestore";
 
 const LoginView = () => {
   const navigation = useNavigation(); // Add this line to get the navigation object
@@ -14,20 +17,47 @@ const LoginView = () => {
   const handleSignIn = async (user, pass) => {
     try {
       const check = await UserAuth(email,password);
-      // console.log(check.message);
       if (check.status === false) {
         if (check.message === "auth/invalid-email") {
+          setErrorMessage("Invalid email address");
         } else if (check.message === "auth/missing-password") {
+          setErrorMessage("Password field is empty");
         } else if (check.message === "auth/invalid-credential") {
+          setErrorMessage("Invalid credentials");
         }
       } else {
-        // console.log("User sign in successful");
-        navigation.navigate("NavigationBar");
+        console.log("User sign in successful");
+        const usersRef = collection(firestore, 'UserInfo');
+        const q = query(usersRef, where("email", "==", email));
+        const querySnapshot = await getDocs(q);
+  
+        if (!querySnapshot.empty) {
+          querySnapshot.forEach(async (doc) => {
+            const userData = doc.data();
+            const docRef = doc.ref;
+            const subColRef = collection(docRef, "period");
+            const subColSnapshot = await getDocs(subColRef);
+  
+            if (!subColSnapshot.empty) {
+
+              navigation.navigate("NavigationBar");
+            } else {
+
+              navigation.navigate("LastPeriod");
+            }
+          });
+        } else {
+
+          navigation.navigate("LastPeriod");
+        }
       }
     } catch (err) {
       console.error("SignIn failed", err.message);
+      setErrorMessage("Sign in failed. Please try again later.");
     }
   };
+  
+  
   return (
     <ImageBackground
       source={require('../img/Screen.png')}

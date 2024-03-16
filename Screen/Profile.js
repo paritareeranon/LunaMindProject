@@ -29,6 +29,10 @@ const Profile = ({ navigation }) => {
 
                 snapshot.forEach(doc => {
                     const userData = doc.data();
+                    const { firstname, surname, email } = userData;
+                    console.log('Firstname:', firstname);
+                    console.log('Surname:', surname);
+                    console.log('Email:', email);
                     setUserData(userData);
                 });
             }
@@ -39,6 +43,7 @@ const Profile = ({ navigation }) => {
 
     fetchUserData();
 }, []);
+
 
 const Logout = () => {
   Alert.alert(
@@ -180,6 +185,7 @@ const styles = StyleSheet.create({
     paddingTop: "22%",
   },
   text: {
+    color: '#B7B7B7',
     marginTop: 10,
     alignSelf: "center",
   },

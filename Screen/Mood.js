@@ -28,7 +28,7 @@ const Mood = () => {
     const handleOk = async (moodScore) => {
         setSelectedMood(moodScore);
         if (moodScore !== null) {
-            // Save mood to Firebase
+
             await saveMoodToFirebase(moodScore, selectedDate);
             navigation.navigate("NavigationBar", { moodScore: currentPopup });
             closePopup();
@@ -60,7 +60,7 @@ const Mood = () => {
             console.error('mood error', err);
         }
     };
-    // สร้างฟังก์ชันเพื่อตรวจสอบว่ามี mood เป็น 1 ติดต่อกัน 3 วันหรือไม่
+  
     const checkConsecutiveMoods = async () => {
         try {
             const email = await AsyncStorage.getItem("useraccount");
@@ -68,7 +68,7 @@ const Mood = () => {
             const docRef = doc(colRef, email);
             const subColRef = collection(docRef, "mood");
 
-            // ดึงข้อมูล mood ทั้งหมดจาก Firestore
+
             const querySnapshot = await getDocs(subColRef);
 
             const moods = [];
@@ -80,24 +80,20 @@ const Mood = () => {
                 });
             });
 
-            // เรียงลำดับ mood ตามวันที่
             moods.sort((a, b) => new Date(a.date) - new Date(b.date));
 
             let consecutiveCount = 0;
 
-            // ตรวจสอบ mood ติดต่อกัน
             for (let i = 0; i < moods.length - 1; i++) {
                 const currentMood = moods[i].mood;
                 const nextMood = moods[i + 1].mood;
                 const currentDate = new Date(moods[i].date);
                 const nextDate = new Date(moods[i + 1].date);
 
-                // ตรวจสอบว่า mood เป็น 1 และวันที่ติดกัน 3 วันหรือไม่
                 if (currentMood === "1" && nextMood === "1") {
                     const differenceInDays = Math.abs((currentDate - nextDate) / (1000 * 60 * 60 * 24));
                     if (differenceInDays <= 3) {
                         consecutiveCount++;
-                        // ถ้าพบ mood เป็น 1 ติดต่อกัน 3 วันขึ้นไปแล้ว ให้แสดง Popup หมายเลข 6
                         if (consecutiveCount >= 2) {
                             openPopup(6);
                             break;

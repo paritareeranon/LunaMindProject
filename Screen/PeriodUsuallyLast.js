@@ -99,7 +99,7 @@ const PeriodUsuallyLast = ({ route }) => {
                     OvulationDate: formattedOvulationDate
                 });
 
-                navigation.navigate('PeriodScreen');
+                navigation.navigate('NavigationBar');
             }
 
 

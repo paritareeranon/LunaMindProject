@@ -8,8 +8,8 @@ import Home from './Home';
 import CalendarMood from './CalendarMood';
 import LastPeriod from './LastPeriod';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -46,7 +46,7 @@ const NavigationBar = () => {
                 options={{
                     tabBarLabel: ({ focused }) => null,
                     tabBarIcon: ({ color, size }) => (
-                        <AntDesign name="calendar" size={24} color= {color} />
+                        <MaterialCommunityIcons name="calendar-range-outline" size={28} color={color} />
                     ),
                 }} />
         </Tab.Navigator>
