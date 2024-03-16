@@ -13,6 +13,7 @@ const PeriodScreen = () => {
     const [typicalPeriodLength, setTypicalPeriodLength] = useState('');
     const [typicalCycleLength, setTypicalCycleLength] = useState('');
     const [periodData, setPeriodData] = useState(null);
+    
     useEffect(() => {
         const fetchPeriodData = async () => {
             try {

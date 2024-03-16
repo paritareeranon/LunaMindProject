@@ -52,11 +52,11 @@ const Report = () => {
 
                 <Text style={styles.Emotions}> Emotions </Text>
                 <View style={styles.moodrow}>
-                    <Image source={require('../img/mood5.png')} style={styles.mood} />
-                    <Image source={require('../img/mood4.png')} style={styles.mood} />
-                    <Image source={require('../img/mood3.png')} style={styles.mood} />
-                    <Image source={require('../img/mood2.png')} style={styles.mood} />
-                    <Image source={require('../img/mood1.png')} style={styles.mood} />
+                    <Image source={require('../img/5.png')} style={styles.mood} />
+                    <Image source={require('../img/4.png')} style={styles.mood} />
+                    <Image source={require('../img/3.png')} style={styles.mood} />
+                    <Image source={require('../img/2.png')} style={styles.mood} />
+                    <Image source={require('../img/1.png')} style={styles.mood} />
                 </View>
                 <View style={styles.textrow}>
                     <Text style={styles.textmood}>5</Text>

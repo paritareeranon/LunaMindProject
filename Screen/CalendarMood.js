@@ -40,15 +40,15 @@ const CalendarMood = () => {
     const getColorByMood = (mood) => {
         switch (mood) {
             case '5':
-                return '#00CE15';
+                return '#1ACB8B';
             case '4':
-                return '#8AF700';
+                return '#B7E48A';
             case '3':
-                return '#FBF220';
+                return '#FFE459';
             case '2':
-                return '#FF9F00';
+                return '#F78F55';
             case '1':
-                return '#FE0000';
+                return '#FD4F4F';
             default:
                 return 'transparent';
         }
@@ -86,11 +86,11 @@ const CalendarMood = () => {
             </View>
             <Text style={styles.Emotions}> Emotions </Text>
                 <View style={styles.moodrow}>
-                    <Image source={require('../img/mood5.png')} style={styles.mood} />
-                    <Image source={require('../img/mood4.png')} style={styles.mood} />
-                    <Image source={require('../img/mood3.png')} style={styles.mood} />
-                    <Image source={require('../img/mood2.png')} style={styles.mood} />
-                    <Image source={require('../img/mood1.png')} style={styles.mood} />
+                    <Image source={require('../img/5.png')} style={styles.mood} />
+                    <Image source={require('../img/4.png')} style={styles.mood} />
+                    <Image source={require('../img/3.png')} style={styles.mood} />
+                    <Image source={require('../img/2.png')} style={styles.mood} />
+                    <Image source={require('../img/1.png')} style={styles.mood} />
                 </View>
         </View>
     );

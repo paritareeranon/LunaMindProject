@@ -3,6 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import { View, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, StyleSheet, Image, Button, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { ImageBackground } from 'react-native';
+import { EvilIcons } from '@expo/vector-icons';
 
 const Home = () => {
 
@@ -49,7 +50,7 @@ const Home = () => {
       <View style={styles.container}>
         <ScrollView style={styles.scrollview}>
           <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
-            <Icon name="user-circle" size={40} color="gray"
+          <EvilIcons name="user" size={50} color="#3F3C3C"
               style={styles.iconContainer} />
           </TouchableOpacity>
 

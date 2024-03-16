@@ -3,13 +3,13 @@ import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
-import Article from './Article';
 import PeriodScreen from './PeriodScreen';
 import Home from './Home';
 import CalendarMood from './CalendarMood';
-import Report from './Report';
 import LastPeriod from './LastPeriod';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { Feather } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -18,8 +18,8 @@ const NavigationBar = () => {
     return (
         <Tab.Navigator initialRouteName='Home' screenOptions={{
             headerShown: false,
-            tabBarInactiveTintColor: '#3F3C3C',
-            tabBarActiveTintColor: 'black',
+            tabBarInactiveTintColor: 'black',
+            tabBarActiveTintColor: '#FF80B5',
         }}>
             {/* <Tab.Screen name="LastPeriod" component={LastPeriod}
                 options={{
@@ -39,14 +39,14 @@ const NavigationBar = () => {
                 options={{
                     tabBarLabel: ({ focused }) => null,
                     tabBarIcon: ({ color, size }) => (
-                        <Icon name="home" size={29} color={color} />
+                        <Feather name="home" size={24} color= {color} />
                     ),
                 }} />
             <Tab.Screen name="CalendarMood" component={CalendarMood}
                 options={{
                     tabBarLabel: ({ focused }) => null,
                     tabBarIcon: ({ color, size }) => (
-                        <Icon name="calendar" size={25} color={color} />
+                        <AntDesign name="calendar" size={24} color= {color} />
                     ),
                 }} />
         </Tab.Navigator>

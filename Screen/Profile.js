@@ -14,55 +14,31 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { firestore } from "../firebaseConfig";
 import { collection, doc, getDocs ,query,where} from "firebase/firestore";
 import { signedOut } from '../api/Authentication';
+import { AntDesign } from '@expo/vector-icons';
 
 const Profile = ({ navigation }) => {
-  const [userData, setUserData] = useState({email:"",firstname:"",surname:"",weight:"",height:""});
+  const [userData, setUserData] = useState({email:"",firstname:"",surname:""});
 
   useEffect(() => {
-    const getUserAccount = async () => {
-      try {
-        const userAccount = await AsyncStorage.getItem("useraccount");
-        if (userAccount !== null) {
-          console.log("User Account:", userAccount);
-          await fetchUserData(userAccount);
-        } else {
-          // Handle the case where user account is not found
+    const fetchUserData = async () => {
+        try {
+            const email = await AsyncStorage.getItem("useraccount");
+            if (email) {
+                const q = query(collection(firestore, 'UserInfo'), where('email', '==', email));
+                const snapshot = await getDocs(q);
+
+                snapshot.forEach(doc => {
+                    const userData = doc.data();
+                    setUserData(userData);
+                });
+            }
+        } catch (error) {
+            console.error('Error fetching user data:', error);
         }
-      } catch (error) {
-        console.error("Error getting user account:", error);
-      }
     };
 
-    getUserAccount();
-  }, []);
-
-  const fetchUserData = async (checkuser) => {
-    console.log(checkuser);
-    try {
-        const querySnapshot = await getDocs(query(collection(firestore, "testuser"), where("email", "==", checkuser)));
-
-        querySnapshot.forEach((doc) => {
-            console.log(doc.id, " => ", doc.data());
-            const userData = doc.data();
-            // ตรวจสอบว่าฟิลด์ email หรือชื่อฟิลด์ที่ใช้เกี่ยวกับอีเมล์มีชื่ออะไร
-            // และใช้ชื่อนั้นในการเข้าถึงค่าอีเมล์
-            const userEmail = userData.email;
-            console.log("email:", userEmail);
-            setUserData((prevUserData) => ({
-              ...prevUserData,
-              email: userData.email,
-              firstname :userData.firstname,
-              surname :userData.surname,
-              weight :userData.weight,
-              height :userData.height
-            }));
-            // ทำสิ่งที่คุณต้องการกับข้อมูลที่ได้รับ เช่น การตั้งค่า state หรือการทำงานอื่น ๆ ที่คุณต้องการดำเนินการต่อไปกับข้อมูลผู้ใช้ที่ได้รับจาก Firestore
-        });
-
-    } catch (err) {
-        console.error("Error fetching user data:", err.message);
-    }
-};
+    fetchUserData();
+}, []);
 
 const Logout = () => {
   Alert.alert(
@@ -92,7 +68,7 @@ const Logout = () => {
       <View style={styles.container}>
         <View style={styles.iconleft}>
           <TouchableOpacity onPress={() => navigation.navigate("NavigationBar")}>
-            <Icon name="arrow-left" size={25} color="black" />
+            <Icon name="angle-left" size={30} color="black" />
           </TouchableOpacity>
         </View>
         <View style={styles.profileImage}>
@@ -123,7 +99,7 @@ const Logout = () => {
               E-mail
             </Text>
             <Text style={[styles.text, { fontWeight: "300", fontSize: 18 ,color:"#B7B7B7" }]}>
-              {userData?.email || "Loading..."}
+            {userData?.email || "Loading..."}
             </Text>
           </View>
 
