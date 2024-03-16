@@ -30,7 +30,7 @@ const Mood = () => {
         if (moodScore !== null) {
             // Save mood to Firebase
             await saveMoodToFirebase(moodScore, selectedDate);
-            navigation.navigate("CalendarMood", { moodScore: currentPopup });
+            navigation.navigate("NavigationBar", { moodScore: currentPopup });
             closePopup();
         } else {
             console.error('No mood selected');
@@ -118,7 +118,7 @@ const Mood = () => {
         <LinearGradient colors={['#DECBED', '#FFDCDF']} style={{ flex: 1 }}>
             <View style={styles.container}>
                 <View style={styles.headerContainer}>
-                    <TouchableOpacity onPress={() => navigation.navigate("CalendarMood")}>
+                    <TouchableOpacity onPress={() => navigation.navigate("NavigationBar")}>
                         <AntDesign name="left" size={22} color="#3F3C3C" />
                     </TouchableOpacity>
                     <Text style={styles.calendar}>
@@ -245,7 +245,8 @@ const Mood = () => {
                                 onClose={closePopup}
                                 onOk={() => handleOk("1")}
                                 customImage={require('../img/1.png')}
-                                customText="-------"
+                                customText="ต้องการทำแบบทดสอบสุขภาพจิตหรือไม่"
+                                customText2="แบบทดสอบสุขภาพจิต"
                             />
                         )}
                     </View>

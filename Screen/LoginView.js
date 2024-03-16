@@ -10,20 +10,6 @@ const LoginView = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-
-  // const handleSignIn = () => {
-  //   if (email === '0000' && password === '0000') {
-  //     console.log('Signed in successfully!');
-  //     setErrorMessage('');
-  //     navigation.navigate("Home");
-  //   } else {
-  //     console.log('Invalid email or password');
-  //     setErrorMessage('Username or password you entered is incorrect. try again!');
-  //   }
-
-  //   setEmail('');
-  //   setPassword('');
-  // };
   
   const handleSignIn = async (user, pass) => {
     try {
@@ -36,7 +22,7 @@ const LoginView = () => {
         }
       } else {
         // console.log("User sign in successful");
-        navigation.navigate("Home");
+        navigation.navigate("NavigationBar");
       }
     } catch (err) {
       console.error("SignIn failed", err.message);

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, TouchableOpacity, StyleSheet} from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Button, ScrollView } from 'react-native';
 import { Calendar, CalendarList } from 'react-native-calendars';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { firestore } from "../firebaseConfig";
@@ -22,7 +22,7 @@ const CalendarMood = () => {
         const moodDataFromFirebase = {};
         snapshot.forEach((doc) => {
             const { date, mood } = doc.data();
-            moodDataFromFirebase[date] = { selected: true, selectedColor: getColorByMood(mood)};
+            moodDataFromFirebase[date] = { selected: true, selectedColor: getColorByMood(mood) };
         });
         setMoodData(moodDataFromFirebase);
     };
@@ -57,8 +57,8 @@ const CalendarMood = () => {
     const handleDayPress = (day) => {
         const today = new Date();
         const selected = new Date(day.dateString);
-        
-        if (selected <= today) { 
+
+        if (selected <= today) {
             console.log(today)
             setSelectedDate(day.dateString);
             navigation.navigate("Mood", { selectedDate: day.dateString });
@@ -69,43 +69,77 @@ const CalendarMood = () => {
 
     return (
         <View style={styles.container}>
-                <View style={styles.headerContainer}>
-                    <TouchableOpacity onPress={() => navigation.navigate("Home")}>
-                        <AntDesign name="left" size={22} color="#3F3C3C" />
-                    </TouchableOpacity>
+            <View style={styles.headerContainer}>
+                <TouchableOpacity onPress={() => navigation.navigate("NavigationBar")}>
                     <AntDesign name="left" size={22} color="transparent" />
+                </TouchableOpacity>
+                <Text style={styles.headerText}> Calendar </Text>
+                <AntDesign name="left" size={22} color="transparent" />
+            </View>
+
+            <View style={styles.calendar}>
+                <Calendar
+                    onDayPress={handleDayPress}
+                    markedDates={moodData}
+                    maxDate={new Date().toISOString().split('T')[0]}
+                />
+            </View>
+            <Text style={styles.Emotions}> Emotions </Text>
+                <View style={styles.moodrow}>
+                    <Image source={require('../img/mood5.png')} style={styles.mood} />
+                    <Image source={require('../img/mood4.png')} style={styles.mood} />
+                    <Image source={require('../img/mood3.png')} style={styles.mood} />
+                    <Image source={require('../img/mood2.png')} style={styles.mood} />
+                    <Image source={require('../img/mood1.png')} style={styles.mood} />
                 </View>
-            
-        <View style={styles.container}>
-            <Calendar
-                onDayPress={handleDayPress}
-                markedDates={moodData}
-                maxDate={new Date().toISOString().split('T')[0]}
-            />
-        </View>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-        paddingTop: 60,
+        flex: 1,
+        paddingTop: '18%',
         padding: 16,
-        paddingBottom: 10,
         backgroundColor: 'white',
-        justifyContent: 'center',
+        // justifyContent: 'center',
     },
     headerContainer: {
+        paddingBottom: '10%',
         flexDirection: 'row',
         justifyContent: 'space-between'
     },
     calendar: {
         fontSize: 17,
-        padding: 4,
-        paddingTop: 5,
         color: '#3F3C3C',
         fontFamily: 'Gill Sans',
         justifyContent: 'center',
+    },
+    headerText: {
+        fontSize: 18,
+        color: 'black',
+        fontFamily: 'Gill Sans',
+        alignSelf: 'center',
+        textAlign: 'center'
+    },
+    Emotions: {
+        fontSize: 16,
+        color: '#3F3C3C',
+        fontWeight: 'bold',
+        marginTop: '20%',
+        paddingLeft: '10%',
+    },
+    moodrow: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    mood: {
+        width: 45,
+        height: 45,
+        margin: '2%',
+        marginTop: '7%',
     },
 });
 

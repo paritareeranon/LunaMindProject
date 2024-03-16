@@ -84,14 +84,15 @@ const Logout = () => {
 };
 
   return (
-    <ImageBackground
-      source={require("../img/ProfileScreen.png")}
+    <LinearGradient
+    colors={['#D2D5F8', '#FDB5CD', '#F5F5F5']}
+    locations={[0, 0.5, 0.5]}
       style={styles.background}
     >
       <View style={styles.container}>
         <View style={styles.iconleft}>
-          <TouchableOpacity onPress={""}>
-            <Icon name="arrow-left" size={30} color="black" />
+          <TouchableOpacity onPress={() => navigation.navigate("NavigationBar")}>
+            <Icon name="arrow-left" size={25} color="black" />
           </TouchableOpacity>
         </View>
         <View style={styles.profileImage}>
@@ -102,52 +103,55 @@ const Logout = () => {
           />
         </View>
         <View style={styles.name}>
-          <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>
+          <Text style={[styles.text, { fontWeight: "bold", fontSize: 24 ,color:"#FFFFFF"}]}>
             @{userData?.firstname || "Loading..."}
           </Text>
         </View>
 
         <View style={styles.profilecard}>
           <View style={styles.information}>
-            <Text style={[styles.text, { fontWeight: "200", fontSize: 28 }]}>
+            <Text style={[styles.text, { fontWeight: "bold", fontSize: 18 ,color:"#3F3C3C"}]}>
               Name
             </Text>
-            <Text style={[styles.text, { fontWeight: "200", fontSize: 24 }]}>
+            <Text style={[styles.text, { fontWeight: "300", fontSize: 18 ,color:"#B7B7B7"}]}>
               {userData?.firstname || "Loading..."} {userData?.surname}
             </Text>
           </View>
 
           <View style={styles.information}>
-            <Text style={[styles.text, { fontWeight: "200", fontSize: 28 }]}>
+            <Text style={[styles.text, { fontWeight: "bold", fontSize: 18 ,color:"#3F3C3C"}]}>
               E-mail
             </Text>
-            <Text style={[styles.text, { fontWeight: "200", fontSize: 24 }]}>
+            <Text style={[styles.text, { fontWeight: "300", fontSize: 18 ,color:"#B7B7B7" }]}>
               {userData?.email || "Loading..."}
             </Text>
           </View>
 
           <View style={styles.information}>
-            <Text style={[styles.text, { fontWeight: "200", fontSize: 28 }]}>
+            <Text style={[styles.text, { fontWeight: "bold", fontSize: 18 ,color:"#3F3C3C"}]}>
               Height/Weight
             </Text>
-            <Text style={[styles.text, { fontWeight: "200", fontSize: 24 }]}>
+            <Text style={[styles.text, { fontWeight: "300", fontSize: 18 ,color:"#B7B7B7"}]}>
               {userData?.height || "Loading..."}/{userData?.weight}
             </Text>
           </View>
-
+          <View style={styles.infobt}>
+          <View colors={["#FDB5CD", "#D2D5F8"]} style={styles.button}>
+            <TouchableOpacity onPress={(Logout)}>
+              <Text style={[styles.buttonText,{fontWeight:"500",color:"#5CA3FF"}]}>Log Out</Text>
+            </TouchableOpacity>
+          </View>
+          </View>
+          <View style={styles.editbt}>
           <LinearGradient colors={["#FDB5CD", "#D2D5F8"]} style={styles.button}>
             <TouchableOpacity onPress={() => navigation.navigate("EditUser")}>
-              <Text style={styles.buttonText}>Edit Userprofile</Text>
+              <Text style={[styles.buttonText,{fontWeight:"500"}]}>Edit Userprofile</Text>
             </TouchableOpacity>
           </LinearGradient>
-          <LinearGradient colors={["#FDB5CD", "#D2D5F8"]} style={styles.button}>
-            <TouchableOpacity onPress={(Logout)}>
-              <Text style={styles.buttonText}>Log out</Text>
-            </TouchableOpacity>
-          </LinearGradient>
+         </View>
         </View>
       </View>
-    </ImageBackground>
+    </LinearGradient>
   );
 };
 
@@ -159,8 +163,8 @@ const styles = StyleSheet.create({
   },
   profilecard: {
     backgroundColor: "white",
-    width: 300,
-    height: 400,
+    width: '75%',
+    height: '55%',
     borderRadius: 30,
   },
   background: {
@@ -168,8 +172,8 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
   },
   profileImage: {
-    width: 150,
-    height: 150,
+    width: 138,
+    height: 138,
     borderRadius: 100,
     overflow: "hidden",
     borderColor: "white",
@@ -185,9 +189,19 @@ const styles = StyleSheet.create({
   },
   information: {
     alignItems: "center",
-    padding: 10,
+    padding: 13,
     borderBottomWidth: 1,
     borderBottomColor: "lightgray",
+  },
+  infobt: {
+    alignItems: "center",
+    padding: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: "lightgray",
+  },
+  editbt: {
+    alignItems: "center",
+    paddingTop: "22%",
   },
   text: {
     marginTop: 10,
@@ -195,17 +209,17 @@ const styles = StyleSheet.create({
   },
   button: {
     width: "80%",
-    paddingLeft: 15,
-    paddingRight: 15,
-    borderRadius: 35,
-    marginTop: 5,
+    paddingLeft: "15%",
+    paddingRight: "15%",
+    borderRadius: "8%",
+    marginTop: "3%",
     alignSelf: "center",
   },
   buttonText: {
     fontSize: 18,
     fontFamily: "Gill Sans",
     textAlign: "center",
-    margin: 10,
+    margin: "6%",
     color: "#ffffff",
     backgroundColor: "transparent",
     alignSelf: "center",

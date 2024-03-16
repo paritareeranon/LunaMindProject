@@ -1,3 +1,6 @@
 {
-  "urlRandomness": "aUls0JM"
+  "urlRandomness": "aUls0JM",
+  "dev": true,
+  "minify": false,
+  "https": false
 }

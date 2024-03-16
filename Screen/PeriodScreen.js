@@ -6,13 +6,13 @@ import { firestore } from "../firebaseConfig";
 import { collection, getDocs, doc } from 'firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const PeriodScreen = ({ route }) => {
+const PeriodScreen = () => {
+    const route = useRoute(); 
     const navigation = useNavigation();
     const { selectedDate } = route.params || {};
     const [typicalPeriodLength, setTypicalPeriodLength] = useState('');
     const [typicalCycleLength, setTypicalCycleLength] = useState('');
     const [periodData, setPeriodData] = useState(null);
-
     useEffect(() => {
         const fetchPeriodData = async () => {
             try {
@@ -37,26 +37,27 @@ const PeriodScreen = ({ route }) => {
         fetchPeriodData();
     }, []);
 
-
     const februaryData = periodData && periodData['February'];
 
     const markedDates = {};
 
-    Object.entries(periodData).map(([month, monthData]) => {
-        const lastPeriodDate = monthData.LastPeriod;
-        const ovulationDate = monthData.OvulationDate;
-    
-        markedDates[lastPeriodDate] = { selected: true, selectedColor: '#FF80B5' };
-        markedDates[ovulationDate] = { selected: true, selectedColor: '#A8D7DA' };
-    });
+    if (periodData) {
+        Object.entries(periodData).map(([month, monthData]) => {
+            const lastPeriodDate = monthData.LastPeriod;
+            const ovulationDate = monthData.OvulationDate;
+
+            markedDates[lastPeriodDate] = { selected: true, selectedColor: '#FF80B5' };
+            markedDates[ovulationDate] = { selected: true, selectedColor: '#A8D7DA' };
+        });
+    }
 
     return (
         <View style={styles.container}>
-            <View style={styles.headerContainer}>
+            <View>
                 <Text style={styles.headerText}>
                     Cycle Tracking
                 </Text>
-                <Button title="Go to CalendarMood" color="red" onPress={() => navigation.navigate('Home')} />
+                {/* <Button title="Go to CalendarMood" color="red" onPress={() => navigation.navigate('Home')} /> */}
 
                 <View style={styles.separator}></View>
 
@@ -70,17 +71,19 @@ const PeriodScreen = ({ route }) => {
             </View>
 
             <View style={styles.bottomSeparator}></View>
-            <View>
-                <Text>
+            
+            <View style={styles.headerContainer}>
+                <Text style={styles.textTypical}>
                     Summary
                 </Text>
 
-                <Text>
-                    Typical Period Length: {typicalPeriodLength}
+                <Text style={styles.textTypical}>
+                    Typical Period Length
                 </Text>
+
                 <Text style={styles.text}>{februaryData?.PeriodUsuallyLast} day</Text>
-                <Text>
-                    Typical Cycle Length: {typicalCycleLength}
+                <Text style={styles.textTypical}>
+                    Typical Cycle Length
                 </Text>
                 <Text style={styles.text}>{februaryData?.TypicalCycle} day</Text>
             </View>
@@ -93,7 +96,13 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'white',
     },
-    headerContainer: {},
+    headerContainer: {
+        position: 'absolute',
+        bottom: '25%',
+        left: 50,
+        right: 50,
+        height: 50,
+    },
     headerText: {
         fontSize: 18,
         paddingTop: '20%',
@@ -133,11 +142,27 @@ const styles = StyleSheet.create({
     },
     bottomSeparator: {
         position: 'absolute',
-        bottom: '38%',
+        bottom: '30%',
         left: 0,
         right: 0,
         height: 1,
         backgroundColor: '#D9D9D9',
+    },
+    text: {
+        fontSize: 16,
+        paddingTop: '5%',
+        color: 'black',
+        fontFamily: 'Gill Sans',
+        alignSelf: 'center',
+        textAlign: 'center'
+    },
+    textTypical: {
+        fontSize: 16,
+        paddingTop: '10%',
+        color: 'black',
+        fontFamily: 'Gill Sans',
+        alignSelf: 'center',
+        textAlign: 'center'
     },
 });
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, Modal, StyleSheet } from 'react-native';
 
-const CustomPopup = ({ visible, onClose, onOk, customText, customImage }) => {
+const CustomPopup = ({ visible, onClose, onOk, customText, customImage,customText2 }) => {
   return (
     <Modal
       animationType="none"
@@ -13,6 +13,7 @@ const CustomPopup = ({ visible, onClose, onOk, customText, customImage }) => {
         <View style={styles.popup}>
           <Image source={customImage} style={styles.popupImage} />
           <Text style={styles.popupText}>{customText}</Text>
+          <Text style={styles.popupText2}>{customText2}</Text>
           <View style={styles.buttonContainer}>
             <TouchableOpacity onPress={onClose} style={styles.cancelButton}>
               <Text style={styles.cancelbuttonText}>Cancel</Text>
@@ -39,10 +40,17 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 36,
     width: 338,
-    height: 200,
+    height: 230,
     alignItems: 'center',
   },
   popupText: {
+    fontSize: 15,
+    marginBottom: 10,
+    fontFamily: 'Gill Sans',
+    textAlign: 'center'
+  },
+  popupText2: {
+    color: '#5CA3FF',
     fontSize: 15,
     marginBottom: 10,
     fontFamily: 'Gill Sans',
