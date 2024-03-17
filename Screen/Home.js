@@ -3,6 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import { View, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, StyleSheet, Image, Button, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { ImageBackground } from 'react-native';
+import { EvilIcons } from '@expo/vector-icons';
 
 const Home = () => {
 
@@ -48,21 +49,21 @@ const Home = () => {
 
       <View style={styles.container}>
         <ScrollView style={styles.scrollview}>
-          <TouchableOpacity>
-            <Icon name="user-circle" size={40} color="gray"
+          <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+          <EvilIcons name="user" size={50} color="#3F3C3C"
               style={styles.iconContainer} />
           </TouchableOpacity>
 
 
           <Text style={styles.textContainer}> Hi, Parii </Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('CalendarMood')}>
             <View style={styles.card}>
               <Text style={styles.title}> How are you </Text>
               <Text style={styles.title}> Today ? </Text>
             </View>
           </TouchableOpacity>
-
-
+          <Button title="Go to Last period" color="red" onPress={() => navigation.navigate('LastPeriod')} />
+          <Button title="Go to PeriodScreen" color="red" onPress={() => navigation.navigate('PeriodScreen')} />
           <View style={styles.row}>
             <Text style={styles.article}> Article </Text>
             <TouchableWithoutFeedback

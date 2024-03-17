@@ -3,27 +3,61 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, ImageBackgr
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
+import { UserAuth } from '../api/Authentication';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { firestore } from "../firebaseConfig";
+import { collection, doc, getDocs ,query,where} from "firebase/firestore";
 
 const LoginView = () => {
   const navigation = useNavigation(); // Add this line to get the navigation object
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  
+  const handleSignIn = async (user, pass) => {
+    try {
+      const check = await UserAuth(email,password);
+      if (check.status === false) {
+        if (check.message === "auth/invalid-email") {
+          setErrorMessage("Invalid email address");
+        } else if (check.message === "auth/missing-password") {
+          setErrorMessage("Password field is empty");
+        } else if (check.message === "auth/invalid-credential") {
+          setErrorMessage("Invalid credentials");
+        }
+      } else {
+        console.log("User sign in successful");
+        const usersRef = collection(firestore, 'UserInfo');
+        const q = query(usersRef, where("email", "==", email));
+        const querySnapshot = await getDocs(q);
+  
+        if (!querySnapshot.empty) {
+          querySnapshot.forEach(async (doc) => {
+            const userData = doc.data();
+            const docRef = doc.ref;
+            const subColRef = collection(docRef, "period");
+            const subColSnapshot = await getDocs(subColRef);
+  
+            if (!subColSnapshot.empty) {
 
-  const handleSignIn = () => {
-    if (email === '0000' && password === '0000') {
-      console.log('Signed in successfully!');
-      setErrorMessage('');
-      navigation.navigate("NavigationBar");
-    } else {
-      console.log('Invalid email or password');
-      setErrorMessage('Username or password you entered is incorrect. try again!');
+              navigation.navigate("NavigationBar");
+            } else {
+
+              navigation.navigate("LastPeriod");
+            }
+          });
+        } else {
+
+          navigation.navigate("LastPeriod");
+        }
+      }
+    } catch (err) {
+      console.error("SignIn failed", err.message);
+      setErrorMessage("Sign in failed. Please try again later.");
     }
-
-    setEmail('');
-    setPassword('');
   };
-
+  
+  
   return (
     <ImageBackground
       source={require('../img/Screen.png')}
@@ -44,11 +78,11 @@ const LoginView = () => {
           placeholder="Email"
           onChangeText={(text) => setEmail(text)}
           value={email}
-        /> 
+        />
         {errorMessage ? (
           <Text style={[styles.errorMessage]}>
             {errorMessage}
-          </Text> 
+          </Text>
         ) : null}
 
         <TextInput
@@ -85,13 +119,13 @@ const LoginView = () => {
 
         <View style={{ flexDirection: 'row' }}>
           <Text style={styles.notMemberText}> Not a member? </Text>
-            <TouchableOpacity onPress={() => navigation.navigate("RegisterScreen")}>
-              <View>
-                <Text style={styles.registerText}>
-                  Register now
-                </Text>
-              </View>
-            </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate("RegisterScreen")}>
+            <View>
+              <Text style={styles.registerText}>
+                Register now
+              </Text>
+            </View>
+          </TouchableOpacity>
         </View>
       </View>
     </ImageBackground>
@@ -112,11 +146,12 @@ const styles = StyleSheet.create({
     fontSize: 15,
     marginBottom: 40,
     alignSelf: 'center',
+    color: '#3F3C3C'
   },
   logo: {
     width: 100,
     height: 100,
-    marginTop: 120 ,
+    marginTop: 120,
     alignSelf: 'center',
   },
   input: {
@@ -148,6 +183,7 @@ const styles = StyleSheet.create({
     marginTop: 64,
     marginBottom: 30,
     alignSelf: 'center',
+    color: '#3F3C3C'
   },
   registerText: {
     marginTop: 64,
@@ -157,6 +193,7 @@ const styles = StyleSheet.create({
   notMemberText: {
     marginTop: 64,
     alignSelf: 'center',
+    color: '#3F3C3C'
   },
   errorMessage: {
     fontSize: 10,

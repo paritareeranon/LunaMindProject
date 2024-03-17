@@ -12,7 +12,7 @@ const Article = () => {
 
     const goBackToHome = () => {
         console.log('BackToHome');
-        navigation.navigate('Home');
+        navigation.navigate('NavigationBar');
     };
 
     const SubArticle1 = () => {

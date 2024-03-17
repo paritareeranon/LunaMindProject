@@ -19,7 +19,7 @@ const Splashscreen = ({ navigation }) => {
         />
       </View>
       <View style={styles.buttonText}>
-        <Text>Developed by</Text>
+        <Text>Developed by{'\n'}imm oum yok </Text>
       </View>
     </View>
   );
