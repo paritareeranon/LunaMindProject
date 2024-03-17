@@ -48,9 +48,9 @@ const Report = () => {
                     <Text>My App</Text>
                     <Barchart />
                 </View> */}
-                <View style={styles.chart}></View>
+                {/* <View style={styles.chart}></View> */}
 
-                <Text style={styles.Emotions}> Emotions </Text>
+                <Text style={styles.Emotions}> Mood Bar </Text>
                 <View style={styles.moodrow}>
                     <Image source={require('../img/mood5.png')} style={styles.mood} />
                     <Image source={require('../img/mood4.png')} style={styles.mood} />
@@ -59,11 +59,11 @@ const Report = () => {
                     <Image source={require('../img/mood1.png')} style={styles.mood} />
                 </View>
                 <View style={styles.textrow}>
-                    <Text style={styles.textmood}>5</Text>
-                    <Text style={styles.textmood}>4</Text>
-                    <Text style={styles.textmood}>3</Text>
-                    <Text style={styles.textmood}>2</Text>
-                    <Text style={styles.textmood}>1</Text>
+                    <Text style={styles.textmood}>55%</Text>
+                    <Text style={styles.textmood}>20%</Text>
+                    <Text style={styles.textmood}>40%</Text>
+                    <Text style={styles.textmood}>60%</Text>
+                    <Text style={styles.textmood}>12%</Text>
                 </View>
                 <Text style={styles.mens}> Menstruation </Text>
                 <View style={styles.row}>
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     },
     chart: {
         marginTop: 19,
-        height: '100%',
+        height: '50%',
         width: '80%',
         backgroundColor: 'white',
         // borderRadius: 15,
@@ -154,8 +154,9 @@ const styles = StyleSheet.create({
     mood: {
         width: 45,
         height: 45,
-        margin: '2%',
+        // margin: '2%',
         marginTop: '7%',
+        marginHorizontal: 8, 
     },
     textrow: {
         flexDirection: 'row',
@@ -164,10 +165,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     textmood: {
-        margin: 27,
-        marginTop: -60,
+        // margin: 27,
+        marginTop: 10,
         fontSize: 14,
-        fontWeight: 'bold',
+        // fontWeight: 'bold',
+        marginHorizontal: 15, 
+        backgroundColor: 'grey',
     },
     mens: {
         fontSize: 16,
