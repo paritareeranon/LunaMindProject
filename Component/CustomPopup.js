@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
   },
   popupText2: {
     color: '#5CA3FF',
-    fontSize: 15,
+    fontSize: 10,
     marginBottom: 10,
     fontFamily: 'Gill Sans',
     textAlign: 'center'

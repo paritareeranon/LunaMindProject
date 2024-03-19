@@ -43,12 +43,12 @@ const LoginView = () => {
               navigation.navigate("NavigationBar");
             } else {
 
-              navigation.navigate("LastPeriod");
+              navigation.navigate("Welcome");
             }
           });
         } else {
 
-          navigation.navigate("LastPeriod");
+          navigation.navigate("Welcome");
         }
       }
     } catch (err) {

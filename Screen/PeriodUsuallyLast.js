@@ -72,7 +72,7 @@ const PeriodUsuallyLast = ({ route }) => {
             console.log(nextCycleDate);
             console.log(cycleLength);
 
-            for (let i = 0; i < 12; i++) {
+            for (let i = 0; i < 11; i++) {
                 
                 nextCycleDate.setDate(nextCycleDate.getDate() + parseInt(cycleLength, 10));
                 console.log(nextCycleDate);

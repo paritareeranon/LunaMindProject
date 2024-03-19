@@ -7,8 +7,9 @@ import CustomPopup from '../Component/CustomPopup';
 import CalendarMood from './CalendarMood';
 import moment from 'moment';
 import { firestore } from "../firebaseConfig";
-import { collection, addDoc, setDoc, getDocs, doc } from 'firebase/firestore';
+import { collection, addDoc, setDoc, getDoc, doc, query,where } from 'firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Linking } from 'react-native';
 
 const Mood = () => {
     const navigation = useNavigation();
@@ -23,6 +24,10 @@ const Mood = () => {
 
     const closePopup = () => {
         setCurrentPopup(null);
+    };
+
+    const openURL = (url) => {
+        Linking.openURL(url);
     };
 
     const handleOk = async (moodScore) => {
@@ -45,22 +50,39 @@ const Mood = () => {
                 const colRef = collection(firestore, 'UserInfo');
                 const docRef = doc(colRef, email);
                 const subColRef = collection(docRef, "mood");
-                const subDocRef = doc(subColRef, selectedDate);
+                const monthName = moment(selectedDate).format('MMMM');
+                const subDocRef = doc(subColRef, monthName);
+                
 
-                await setDoc(subDocRef, {
-                    mood: selectedMood,
-                    date: selectedDate,
-                });
-                console.log('Mood added to Firestore!');
-            }
-            else {
+                const moodDocSnapshot = await getDoc(subDocRef);
+                let moodData = [];
+    
+                if (moodDocSnapshot.exists()) {
+                    const moodDocData = moodDocSnapshot.data();
+                    moodData = moodDocData.moodData || [];
+                }
+    
+                console.log("Current moodData:", moodData);
+    
+                const existingIndex = moodData.findIndex(item => item.date === selectedDate);
+    
+                if (existingIndex !== -1) {
+                    moodData[existingIndex].mood = selectedMood;
+                } else {
+
+                    moodData.push({ date: selectedDate, mood: selectedMood });
+                }
+    
+                await setDoc(subDocRef, { moodData });
+                console.log('Mood added to Firestore array!');
+            } else {
                 console.error('No mood selected or date is missing');
             }
         } catch (err) {
             console.error('mood error', err);
         }
     };
-  
+    
     const checkConsecutiveMoods = async () => {
         try {
             const email = await AsyncStorage.getItem("useraccount");
@@ -242,7 +264,11 @@ const Mood = () => {
                                 onOk={() => handleOk("1")}
                                 customImage={require('../img/1.png')}
                                 customText="ต้องการทำแบบทดสอบสุขภาพจิตหรือไม่"
-                                customText2="แบบทดสอบสุขภาพจิต"
+                                customText2={
+                                    <TouchableOpacity onPress={() => openURL('https://dmh.go.th/test/')}>
+                                        <Text style={{ color: '#5CA3FF', fontSize: 16, textDecorationLine: 'underline' }}>แบบทดสอบสุขภาพจิต</Text>
+                                    </TouchableOpacity>
+                                }
                             />
                         )}
                     </View>

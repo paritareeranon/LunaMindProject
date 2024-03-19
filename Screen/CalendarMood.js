@@ -14,18 +14,27 @@ const CalendarMood = () => {
     const [selectedDate, setSelectedDate] = useState(null);
 
     const fetchMoodData = async () => {
-        const email = await AsyncStorage.getItem("useraccount");
-        const moodCollectionRef = collection(firestore, 'UserInfo');
-        const docRef = doc(moodCollectionRef, email);
-        const subColRef = collection(docRef, "mood");
-        const snapshot = await getDocs(subColRef);
-        const moodDataFromFirebase = {};
-        snapshot.forEach((doc) => {
-            const { date, mood } = doc.data();
-            moodDataFromFirebase[date] = { selected: true, selectedColor: getColorByMood(mood) };
-        });
-        setMoodData(moodDataFromFirebase);
+        try {
+            const email = await AsyncStorage.getItem("useraccount");
+            const colRef = collection(firestore, 'UserInfo');
+            const docRef = doc(colRef, email);
+            const subColRef = collection(docRef, "mood");
+            const snapshot = await getDocs(subColRef);
+    
+            const moodDataFromFirebase = {};
+            snapshot.forEach((doc) => {
+                const month = doc.id; 
+                const moodDataArray = doc.data().moodData; 
+                moodDataArray.forEach(({ date, mood }) => {
+                    moodDataFromFirebase[date] = { selected: true, selectedColor: getColorByMood(mood) };
+                });
+            });
+            setMoodData(moodDataFromFirebase);
+        } catch (error) {
+            console.error('Error fetching mood data:', error);
+        }
     };
+    
 
     useEffect(() => {
         fetchMoodData();
