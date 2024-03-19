@@ -34,7 +34,6 @@ const CalendarMood = () => {
             console.error('Error fetching mood data:', error);
         }
     };
-    
 
     useEffect(() => {
         fetchMoodData();

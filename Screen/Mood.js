@@ -7,7 +7,7 @@ import CustomPopup from '../Component/CustomPopup';
 import CalendarMood from './CalendarMood';
 import moment from 'moment';
 import { firestore } from "../firebaseConfig";
-import { collection, addDoc, setDoc, getDoc, doc, query,where } from 'firebase/firestore';
+import { collection, addDoc, setDoc, getDoc, doc, query, getDocs } from 'firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Linking } from 'react-native';
 
@@ -52,7 +52,6 @@ const Mood = () => {
                 const subColRef = collection(docRef, "mood");
                 const monthName = moment(selectedDate).format('MMMM');
                 const subDocRef = doc(subColRef, monthName);
-                
 
                 const moodDocSnapshot = await getDoc(subDocRef);
                 let moodData = [];
@@ -89,33 +88,38 @@ const Mood = () => {
             const colRef = collection(firestore, 'UserInfo');
             const docRef = doc(colRef, email);
             const subColRef = collection(docRef, "mood");
-
-
+    
             const querySnapshot = await getDocs(subColRef);
-
+    
             const moods = [];
+    
             querySnapshot.forEach((doc) => {
-                const data = doc.data();
-                moods.push({
-                    date: data.date,
-                    mood: data.mood
+                const moodData = doc.data().moodData; // เข้าถึงข้อมูล moodData จากเอกสาร
+                moodData.forEach(({ date, mood }) => {
+                    moods.push({
+                        date: date,
+                        mood: mood
+                    });
                 });
             });
-
+    
             moods.sort((a, b) => new Date(a.date) - new Date(b.date));
-
+    
             let consecutiveCount = 0;
-
+    
             for (let i = 0; i < moods.length - 1; i++) {
                 const currentMood = moods[i].mood;
                 const nextMood = moods[i + 1].mood;
-                const currentDate = new Date(moods[i].date);
-                const nextDate = new Date(moods[i + 1].date);
-
+    
                 if (currentMood === "1" && nextMood === "1") {
+                    const currentDate = new Date(moods[i].date);
+                    const nextDate = new Date(moods[i + 1].date);
+    
                     const differenceInDays = Math.abs((currentDate - nextDate) / (1000 * 60 * 60 * 24));
+    
                     if (differenceInDays <= 3) {
                         consecutiveCount++;
+    
                         if (consecutiveCount >= 2) {
                             openPopup(6);
                             break;
@@ -131,6 +135,7 @@ const Mood = () => {
             console.error("Error checking consecutive moods:", error);
         }
     };
+    
 
     return (
         <LinearGradient colors={['#DECBED', '#FFDCDF']} style={{ flex: 1 }}>
