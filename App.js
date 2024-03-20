@@ -27,6 +27,8 @@ import SubArticle7 from './SubArticle/SubArticle7';
 import SubArticle8 from './SubArticle/SubArticle8';
 import Article from './Screen/Article';
 import Report from './Screen/Report';
+import Welcome from './Screen/Welcome';
+import ReportTest from './Screen/ReportTest';
 
 const Stack = createNativeStackNavigator();
 
@@ -73,6 +75,8 @@ const App = () => {
         <Stack.Screen name="SubArticle8" component={SubArticle8}/>
         <Stack.Screen name="Article" component={Article}/>
         <Stack.Screen name="Report" component={Report}/>
+        <Stack.Screen name="Welcome" component={Welcome}/>
+        <Stack.Screen name="ReportTest" component={ReportTest}/>
       </Stack.Navigator>
     </NavigationContainer>
   )

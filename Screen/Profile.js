@@ -12,9 +12,8 @@ import { LinearGradient } from "expo-linear-gradient";
 import Icon from "react-native-vector-icons/FontAwesome";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { firestore } from "../firebaseConfig";
-import { collection, doc, getDocs ,query,where} from "firebase/firestore";
+import { collection, doc, getDocs , query, where} from "firebase/firestore";
 import { signedOut } from '../api/Authentication';
-import { AntDesign } from '@expo/vector-icons';
 
 const Profile = ({ navigation }) => {
   const [userData, setUserData] = useState({email:"",firstname:"",surname:""});
