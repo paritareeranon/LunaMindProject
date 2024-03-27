@@ -6,38 +6,44 @@ import { collection, getDocs, doc } from 'firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ReportTest = () => {
-  const [moodData, setMoodData] = useState([]);
+  const [moods, setMoods] = useState([]);
 
   const maxMoodValue = 5;
 
   useEffect(() => {
-    fetchPeriodData();
-  }, []);
-
-  const fetchPeriodData = async () => {
-    try {
-      const email = await AsyncStorage.getItem('useraccount');
-      if (email) {
+    const fetchMoods = async () => {
+      try {
+        const email = await AsyncStorage.getItem("useraccount");
         const colRef = collection(firestore, 'UserInfo');
         const docRef = doc(colRef, email);
-        const subColRef = collection(docRef, 'mood');
+        const subColRef = collection(docRef, "mood");
         const snapshot = await getDocs(subColRef);
 
-        const data = [];
-        snapshot.forEach(doc => {
-          const { date, mood } = doc.data();
-          data.push({ date, mood });
+        const moodData = [];
+
+        snapshot.forEach((doc) => {
+          const month = doc.id; // Assuming the document ID is the month
+          const moodDataArray = doc.data().moodData; // Assuming moodData is an array in the document
+          moodDataArray.forEach(({ date, mood }) => {
+            moodData.push({ date: date, mood: parseInt(mood) });
+          });
         });
-        setMoodData(data);
+
+        setMoods(moodData);
+        console.log('moodData:', moodData);
+        // setLoading(false);
+      } catch (error) {
+        console.error('Error fetching mood data:', error);
+        // setLoading(false);
       }
-    } catch (error) {
-      console.error('Error fetching period data:', error);
-    }
-  };
+    };
+
+    fetchMoods();
+  }, []);
 
   return (
     <View style={styles.container}>
-      <BarChart
+      {/* <BarChart
         barWidth={22}
         noOfSections={1}
         barBorderRadius={4}
@@ -79,7 +85,7 @@ const ReportTest = () => {
             lineThickness: 0.5
           }
         }}
-      />
+      /> */}
     </View>
   );
 };
