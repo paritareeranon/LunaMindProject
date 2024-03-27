@@ -40,7 +40,7 @@ const Home = () => {
 
   const Report = () => {
     console.log('ReportScreen');
-    navigation.navigate("ReportTest");
+    navigation.navigate("Report");
 
   };
   const Article = () => {
@@ -70,9 +70,6 @@ const Home = () => {
 
   };
   return (
-    // <ImageBackground
-    //   source={require('../img/Screen.png')}
-    //   style={styles.background}>
 
     <View style={styles.container}>
       <ScrollView style={styles.scrollview}>
@@ -90,8 +87,7 @@ const Home = () => {
             <Text style={styles.title}>How are you{'\n'}Today ? </Text>
           </TouchableOpacity>
         </LinearGradient>
-        
-        {/* <Button title="Go to Last period" color="red" onPress={() => navigation.navigate('LastPeriod')} /> */}
+      
         <View style={styles.row}>
           <Text style={styles.article}> Article </Text>
           <TouchableWithoutFeedback
@@ -168,14 +164,14 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: '#FF80B5',
     borderRadius: 24,
-    marginTop: '6%',
+    marginTop: '4%',
     shadowColor: '##D8D8D8',
     shadowOffset: {
       width: 0,
       height: 4,
     },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
+    shadowOpacity: 0.2,
+    shadowRadius: 10,
     elevation: 14,
     width: '90%',
     height: 150,
@@ -207,16 +203,18 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     paddingRight: '55%',
     fontSize: 17,
+    fontFamily: 'Gill Sans',
   },
   viewall: {
     marginTop: 20,
-    fontSize: 14,
+    fontSize: 15,
     marginLeft: '10%',
     color: "#6C6C6C",
-    // textDecorationLine: 'underline',
+    fontFamily: 'Gill Sans',
   },
   hoveredText: {
     color: '#fff',
+    fontFamily: 'Gill Sans',
   },
   row: {
     marginTop: 20,
@@ -266,6 +264,7 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     paddingRight: '55%',
     fontSize: 17,
+    fontFamily: 'Gill Sans',
   },
   reportcard: {
     backgroundColor: '#FBE1E3',

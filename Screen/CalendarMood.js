@@ -20,11 +20,11 @@ const CalendarMood = () => {
             const docRef = doc(colRef, email);
             const subColRef = collection(docRef, "mood");
             const snapshot = await getDocs(subColRef);
-    
+
             const moodDataFromFirebase = {};
             snapshot.forEach((doc) => {
-                const month = doc.id; 
-                const moodDataArray = doc.data().moodData; 
+                const month = doc.id;
+                const moodDataArray = doc.data().moodData;
                 moodDataArray.forEach(({ date, mood }) => {
                     moodDataFromFirebase[date] = { selected: true, selectedColor: getColorByMood(mood) };
                 });
@@ -85,14 +85,20 @@ const CalendarMood = () => {
                 <AntDesign name="left" size={22} color="transparent" />
             </View>
 
+            <View style={styles.separator}></View>
+
             <View style={styles.calendar}>
                 <Calendar
                     onDayPress={handleDayPress}
                     markedDates={moodData}
                     maxDate={new Date().toISOString().split('T')[0]}
+                    theme={{
+                        arrowColor: '#FF80B5',
+                    }}
                 />
             </View>
-            <Text style={styles.Emotions}> Emotions </Text>
+            <View style={styles.moodContainer1}>
+                <Text style={styles.Emotions}> Emotions </Text>
                 <View style={styles.moodrow}>
                     <Image source={require('../img/5.png')} style={styles.mood} />
                     <Image source={require('../img/4.png')} style={styles.mood} />
@@ -100,20 +106,20 @@ const CalendarMood = () => {
                     <Image source={require('../img/2.png')} style={styles.mood} />
                     <Image source={require('../img/1.png')} style={styles.mood} />
                 </View>
+            </View>
         </View>
+
     );
 };
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingTop: '18%',
-        padding: 16,
+        paddingTop: '20%',
         backgroundColor: 'white',
-        // justifyContent: 'center',
     },
     headerContainer: {
-        paddingBottom: '10%',
+        paddingBottom: '4%',
         flexDirection: 'row',
         justifyContent: 'space-between'
     },
@@ -124,11 +130,24 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     headerText: {
-        fontSize: 18,
+        fontSize: 19,
         color: 'black',
         fontFamily: 'Gill Sans',
         alignSelf: 'center',
         textAlign: 'center'
+    },
+    separator: {
+        height: 1,
+        width: '100%',
+        backgroundColor: '#D9D9D9',
+        marginBottom: '5%',
+    },
+    moodContainer1: {
+        position: 'absolute',
+        bottom: '12%',
+        left: 0,
+        right: 0,
+        height: '30%',
     },
     Emotions: {
         fontSize: 16,

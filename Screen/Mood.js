@@ -270,7 +270,7 @@ const Mood = () => {
                                 customImage={require('../img/1.png')}
                                 customText="ต้องการทำแบบทดสอบสุขภาพจิตหรือไม่"
                                 customText2={
-                                    <TouchableOpacity onPress={() => openURL('https://dmh.go.th/test/')}>
+                                    <TouchableOpacity onPress={() => openURL('https://checkin.dmh.go.th/main/index.php?type=1')}>
                                         <Text style={{ color: '#5CA3FF', fontSize: 16, textDecorationLine: 'underline' }}>แบบทดสอบสุขภาพจิต</Text>
                                     </TouchableOpacity>
                                 }

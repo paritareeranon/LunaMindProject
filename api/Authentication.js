@@ -3,7 +3,6 @@ import { auth, firestore } from "../firebaseConfig";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { collection, doc, setDoc } from "firebase/firestore";
 
-
 export const CreateUser = async (email, password, firstname, surname, navigation) => {
   try {
     // สร้างผู้ใช้ใน Authentication

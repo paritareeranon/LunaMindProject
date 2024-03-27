@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ImageBackground,Image } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ImageBackground, Image, Keyboard } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
 import { CreateUser } from '../api/Authentication';
@@ -18,7 +18,7 @@ const RegisterScreen = ({ navigation }) => {
   const [surnameBorderColor, setSurnameBorderColor] = useState('transparent');
   const [emailBorderColor, setEmailBorderColor] = useState('transparent');
   const [passwordBorderColor, setPasswordBorderColor] = useState('transparent');
-  
+
   const handleRegister = async () => {
     // Set border color states based on input validation
     CreateUser(email, password, firstname, surname, navigation);
@@ -31,49 +31,40 @@ const RegisterScreen = ({ navigation }) => {
 
   return (
     <ImageBackground
-    source={require('../img/Screen.png')}
-    style={styles.background}>
-    <View style={styles.container}>
-      <Text style={styles.header}>Register</Text>
-      <TextInput
-        style={[styles.input, { borderColor: firstnameBorderColor }]}
-        placeholder="Firstname"
+      source={require('../img/Screen.png')}
+      style={styles.background}>
+      <View style={styles.container}>
+        <Text style={styles.header}>Register</Text>
+        <TextInput
+          style={[styles.input, { borderColor: firstnameBorderColor }]}
+          placeholder="Firstname"
 
-        onChangeText={(text) => setFirstname(text)}
-      />
-      <TextInput
-        style={[styles.input, { borderColor: surnameBorderColor }]}
-        placeholder="Surname"
-
-        onChangeText={(text) => setSurname(text)}
-      />
-      <TextInput
-        style={[styles.input, { borderColor: emailBorderColor }]}
-        placeholder="Email"
-
-        onChangeText={(text) => setEmail(text)}
-      />
-      <TextInput
-        style={[styles.input, { borderColor: passwordBorderColor }]}
-        placeholder="Password"
-        secureTextEntry
-        onChangeText={(text) => setPassword(text)}
-      />
-      <LinearGradient colors={['#FDB5CD', '#D2D5F8']} style={styles.button}>
-        <TouchableOpacity onPress={handleRegister}>
-          <Text style={styles.buttonText}>Sign up</Text>
-        </TouchableOpacity>
-      </LinearGradient>
-      <Text style={styles.continueText}>
-          Or continue with
-        </Text>
-        <Image
-          style={{
-            alignSelf: 'center',
-          }}
-          source={require('../img/logo_google.png')}
+          onChangeText={(text) => setFirstname(text)}
         />
-    </View>
+        <TextInput
+          style={[styles.input, { borderColor: surnameBorderColor }]}
+          placeholder="Surname"
+
+          onChangeText={(text) => setSurname(text)}
+        />
+        <TextInput
+          style={[styles.input, { borderColor: emailBorderColor }]}
+          placeholder="Email"
+
+          onChangeText={(text) => setEmail(text)}
+        />
+        <TextInput
+          style={[styles.input, { borderColor: passwordBorderColor }]}
+          placeholder="Password"
+          secureTextEntry
+          onChangeText={(text) => setPassword(text)}
+        />
+        <LinearGradient colors={['#FDB5CD', '#D2D5F8']} style={styles.button}>
+          <TouchableOpacity onPress={handleRegister}>
+            <Text style={styles.buttonText}>Sign up</Text>
+          </TouchableOpacity>
+        </LinearGradient>
+      </View>
     </ImageBackground>
   );
 };
@@ -86,11 +77,10 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 30,
-    marginTop:50 ,
-    padding: 40,
+    padding: 30,
     fontWeight: 'bold',
     alignSelf: 'center',
-    color: '#3F3C3C' ,
+    color: '#3F3C3C',
   },
   input: {
     width: '80%',
@@ -127,7 +117,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
     marginBottom: 30,
     alignSelf: 'center',
-    color: '#3F3C3C' ,
+    color: '#3F3C3C',
   },
 });
 

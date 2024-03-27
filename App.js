@@ -28,7 +28,7 @@ import SubArticle8 from './SubArticle/SubArticle8';
 import Article from './Screen/Article';
 import Report from './Screen/Report';
 import Welcome from './Screen/Welcome';
-import ReportTest from './Screen/ReportTest';
+import AddPeriod from './Screen/AddPeriod';
 
 const Stack = createNativeStackNavigator();
 
@@ -76,7 +76,7 @@ const App = () => {
         <Stack.Screen name="Article" component={Article}/>
         <Stack.Screen name="Report" component={Report}/>
         <Stack.Screen name="Welcome" component={Welcome}/>
-        <Stack.Screen name="ReportTest" component={ReportTest}/>
+        <Stack.Screen name="AddPeriod" component={AddPeriod}/>
       </Stack.Navigator>
     </NavigationContainer>
   )

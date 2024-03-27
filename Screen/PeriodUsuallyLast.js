@@ -31,7 +31,6 @@ const PeriodUsuallyLast = ({ route }) => {
         }
     };
 
-
     const saveDataToFirestore = async (selectedDate, cycleLength, periodUsuallyLast) => {
         try {
             const currentDate = new Date(selectedDate);
@@ -107,7 +106,6 @@ const PeriodUsuallyLast = ({ route }) => {
             console.error('Error calculating next cycle date: ', error);
         }
     };
-
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>

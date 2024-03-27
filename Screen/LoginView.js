@@ -106,17 +106,6 @@ const LoginView = () => {
           </TouchableOpacity>
         </LinearGradient>
 
-        <Text style={styles.continueText}>
-          Or continue with
-        </Text>
-
-        <Image
-          style={{
-            alignSelf: 'center',
-          }}
-          source={require('../img/logo_google.png')}
-        />
-
         <View style={{ flexDirection: 'row' }}>
           <Text style={styles.notMemberText}> Not a member? </Text>
           <TouchableOpacity onPress={() => navigation.navigate("RegisterScreen")}>
@@ -139,8 +128,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    justifyContent: 'center', // Center vertically
-    alignItems: 'center', // Center horizontally
+    alignItems: 'center',
   },
   header: {
     fontSize: 15,
@@ -151,7 +139,7 @@ const styles = StyleSheet.create({
   logo: {
     width: 100,
     height: 100,
-    marginTop: 120,
+    marginTop: '50%',
     alignSelf: 'center',
   },
   input: {
