@@ -40,6 +40,7 @@ const App = () => {
     onAuthStateChanged(auth, async (user) => { // Use auth
       if (user) {
         console.log(JSON.stringify(user, null, 2));
+        
         setUser(user.email);
         await AsyncStorage.setItem("useraccount", user.email);
       } else {

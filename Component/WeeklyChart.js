@@ -4,11 +4,12 @@ import { BarChart } from 'react-native-gifted-charts';
 import { firestore } from "../firebaseConfig";
 import { collection, getDocs, doc } from 'firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
 const WeeklyChart = () => {
     const [moods, setMoods] = useState([]);
 
-    useEffect(() => {
+ 
         const fetchMoods = async () => {
             try {
                 const email = await AsyncStorage.getItem("useraccount");
@@ -45,10 +46,15 @@ const WeeklyChart = () => {
                 console.error('Error fetching mood data:', error);
             }
         };
-
-        fetchMoods();
-    }, []);
-
+        useEffect(() => {
+            fetchMoods();
+        }, []);
+    
+        useFocusEffect(
+            React.useCallback(() => {
+                fetchMoods();
+            }, [])
+        );
     const getPast7Days = () => {
         const days = [];
         const today = new Date();
@@ -78,7 +84,7 @@ const WeeklyChart = () => {
             case 2:
                 return '#F78F55';
             case 1:
-                return '#FD4F4F';
+                return '#FD7171';
             default:
                 return '#000000';
         }

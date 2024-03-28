@@ -27,6 +27,8 @@ const LoginView = () => {
   const handleSignIn = async () => {
     try {
       const check = await UserAuth(email, password);
+      const lowercaseEmail = email.toLowerCase();
+      console.log("useraccount", lowercaseEmail);
       console.log("check.message", check.message);
       if (check.status === false) {
         if (check.message === "auth/invalid-email") {
@@ -41,11 +43,12 @@ const LoginView = () => {
       } else {
         console.log("User sign in successful");
         const usersRef = collection(firestore, 'UserInfo');
-        const q = query(usersRef, where("email", "==", email));
+        const q = query(usersRef, where("email", "==", lowercaseEmail));
         const querySnapshot = await getDocs(q);
 
         if (!querySnapshot.empty) {
           querySnapshot.forEach(async (doc) => {
+            console.log("querySnapshot", querySnapshot);
             const userData = doc.data();
             const docRef = doc.ref;
             const subColRef = collection(docRef, "period");

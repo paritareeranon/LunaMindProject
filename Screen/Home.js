@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { View, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, StyleSheet, Image, Button, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { ImageBackground } from 'react-native';
@@ -15,7 +15,7 @@ const Home = () => {
   const currentDate = moment().format('dddd, MMMM D');
   const [isHovered, setHovered] = useState(false);
   const [userData, setUserData] = useState({ email: "", firstname: "", surname: "" });
-
+  const [weeklyChartData, setWeeklyChartData] = useState(null);
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -38,6 +38,15 @@ const Home = () => {
 
     fetchUserData();
   }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      // ทำสิ่งที่ต้องการเมื่อหน้า Home ได้รับโฟกัส
+      console.log("Home screen focused");
+      // ทำการรีเฟรชหรือดึงข้อมูลใหม่ที่ต้องการทำให้หน้า Home อัปเดตทุกครั้งที่เข้าหน้า Home
+    }, [])
+  );
+
 
   const Report = () => {
     console.log('ReportScreen');
@@ -88,7 +97,7 @@ const Home = () => {
             <Text style={styles.title}>How are you{'\n'}Today ? </Text>
           </TouchableOpacity>
         </LinearGradient>
-      
+
         <View style={styles.row}>
           <Text style={styles.article}> Article </Text>
           <TouchableWithoutFeedback
@@ -130,13 +139,12 @@ const Home = () => {
 
         <Text style={styles.report}> Report </Text>
         <TouchableOpacity onPress={Report} >
-        <View style={styles.card}>
-                        <WeeklyChart />
-                    </View>
+          <View style={styles.card}>
+            <WeeklyChart />
+          </View>
         </TouchableOpacity>
       </ScrollView>
     </View>
-    // </ImageBackground>
   );
 }
 
@@ -294,6 +302,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: 10,
     padding: 20,
-},
+  },
 });
 export default Home;

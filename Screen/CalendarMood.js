@@ -96,7 +96,6 @@ if (periodData) {
     });
 }
 
-
     const getColorByMood = (mood) => {
         switch (mood) {
             case '5':
@@ -108,7 +107,7 @@ if (periodData) {
             case '2':
                 return '#F78F55';
             case '1':
-                return '#FD4F4F';
+                return '#FD7171';
             default:
                 return 'transparent';
         }
