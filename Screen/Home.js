@@ -8,35 +8,36 @@ import { LinearGradient } from "expo-linear-gradient";
 import moment from 'moment';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { firestore } from "../firebaseConfig";
-import { collection, doc, getDocs ,query,where} from "firebase/firestore";
+import { collection, doc, getDocs, query, where } from "firebase/firestore";
+import WeeklyChart from '../Component/WeeklyChart';
 
 const Home = () => {
   const currentDate = moment().format('dddd, MMMM D');
   const [isHovered, setHovered] = useState(false);
-  const [userData, setUserData] = useState({email:"",firstname:"",surname:""});
+  const [userData, setUserData] = useState({ email: "", firstname: "", surname: "" });
 
   const navigation = useNavigation();
 
   useEffect(() => {
     const fetchUserData = async () => {
-        try {
-            const email = await AsyncStorage.getItem("useraccount");
-            if (email) {
-                const q = query(collection(firestore, 'UserInfo'), where('email', '==', email));
-                const snapshot = await getDocs(q);
+      try {
+        const email = await AsyncStorage.getItem("useraccount");
+        if (email) {
+          const q = query(collection(firestore, 'UserInfo'), where('email', '==', email));
+          const snapshot = await getDocs(q);
 
-                snapshot.forEach(doc => {
-                    const userData = doc.data();
-                    setUserData(userData);
-                });
-            }
-        } catch (error) {
-            console.error('Error fetching user data:', error);
+          snapshot.forEach(doc => {
+            const userData = doc.data();
+            setUserData(userData);
+          });
         }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
     };
 
     fetchUserData();
-}, []);
+  }, []);
 
   const Report = () => {
     console.log('ReportScreen');
@@ -78,11 +79,11 @@ const Home = () => {
             style={styles.iconContainer} />
         </TouchableOpacity>
         <Text style={styles.textContainer}> Hi, {userData?.firstname || "Loading..."} </Text>
-        
+
         <LinearGradient colors={['#FF80B5', '#D2D5F8']}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }} style={styles.card}>
-        <TouchableOpacity onPress={() => navigation.navigate('CalendarMood')}>
+          <TouchableOpacity onPress={() => navigation.navigate('CalendarMood')}>
             <Text style={styles.title2}>{currentDate}</Text>
             <Text style={styles.title}>How are you{'\n'}Today ? </Text>
           </TouchableOpacity>
@@ -129,9 +130,9 @@ const Home = () => {
 
         <Text style={styles.report}> Report </Text>
         <TouchableOpacity onPress={Report} >
-          <View style={styles.reportcard}>
-
-          </View>
+        <View style={styles.card}>
+                        <WeeklyChart />
+                    </View>
         </TouchableOpacity>
       </ScrollView>
     </View>
@@ -285,6 +286,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-
+  card: {
+    borderRadius: 25,
+    backgroundColor: '#F2F2F2',
+    width: '90%',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    marginTop: 10,
+    padding: 20,
+},
 });
 export default Home;

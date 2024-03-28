@@ -30,10 +30,12 @@ const PeriodScreen = () => {
                 });
                 setPeriodData(data);
 
-                const today = new Date().toISOString().split('T')[0];
-                const monthName = today.toLocaleString('default', { month: 'long' });
-                const isTodayMarked = checkIfTodayMarked(data[monthName], today);
-                setIsPeriodToday(isTodayMarked); // ตั้งค่าสถานะ isPeriodToday ตามผลลัพธ์ที่ได้จากการตรวจสอบ
+                const currentDate = new Date();
+                const currentMonth = currentDate.toLocaleString('default', { month: 'long' });
+                const currentMonthData = data[currentMonth];
+                const lastPeriod = currentMonthData?.LastPeriod;
+                // console.log('lastPeriodDate: ', lastPeriod);
+                setIsPeriodToday(lastPeriod);
             }
         } catch (error) {
             console.error('Error fetching period data:', error);
@@ -47,7 +49,6 @@ const PeriodScreen = () => {
     useFocusEffect(
         React.useCallback(() => {
             fetchPeriodData();
-            checkIfTodayMarked();
         }, [])
     );
 
@@ -59,6 +60,7 @@ const PeriodScreen = () => {
         Object.entries(periodData).map(([month, monthData]) => {
             const lastPeriodDate = monthData.LastPeriod;
             const ovulationDate = monthData.OvulationDate;
+            // console.log('lastPeriodDate', lastPeriodDate);
 
             markedDates[lastPeriodDate] = { selected: true, selectedColor: '#FF80B5' };
             markedDates[ovulationDate] = { selected: true, selectedColor: '#A8D7DA' };
@@ -80,9 +82,20 @@ const PeriodScreen = () => {
         });
     }
 
-    const checkIfTodayMarked = (data, currentDate) => {
-        setIsPeriodToday(data?.LastPeriod); // ตรวจสอบว่ามีการเป็นประจำเดือนในวันนี้หรือไม่
+    const showPeriodRange = () => {
+        if (isPeriodToday) {
+            const startDate = new Date(isPeriodToday);
+            const endDate = new Date(startDate);
+            endDate.setDate(endDate.getDate() + 3);
+    
+            const startDateString = startDate.toLocaleDateString('en-US', { weekday: 'short', day: 'numeric' });
+            const endDateString = endDate.toLocaleDateString('en-US', { weekday: 'short', day: 'numeric' });
+    
+            return `${startDateString} - ${endDateString}`;
+        }
+        return '';
     };
+    
 
     return (
         <View style={styles.container}>
@@ -109,7 +122,8 @@ const PeriodScreen = () => {
             </View>
 
             <View>
-                {isPeriodToday && <Text>Have menstruation today</Text>}
+                {/* <Text>Last Period Date: {isPeriodToday}</Text>
+                <Text>Period Range: {showPeriodRange()}</Text> */}
             </View>
 
             <View style={styles.bottomSeparator}></View>

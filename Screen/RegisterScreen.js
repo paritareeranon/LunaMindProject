@@ -13,20 +13,25 @@ const RegisterScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  // States for border colors
   const [firstnameBorderColor, setFirstnameBorderColor] = useState('transparent');
   const [surnameBorderColor, setSurnameBorderColor] = useState('transparent');
   const [emailBorderColor, setEmailBorderColor] = useState('transparent');
   const [passwordBorderColor, setPasswordBorderColor] = useState('transparent');
 
   const handleRegister = async () => {
-    // Set border color states based on input validation
-    CreateUser(email, password, firstname, surname, navigation);
+    const emailFormat = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+    if (!email.match(emailFormat)) {
+      Alert.alert('Invalid Email', 'Please enter a valid email address.');
+      setEmailBorderColor('red');
+      return;
+    }
+    const lowercaseEmail = email.toLowerCase();
+
+    CreateUser(lowercaseEmail, password, firstname, surname, navigation);
     setFirstnameBorderColor(firstname.trim() === '' ? 'red' : 'transparent');
     setSurnameBorderColor(surname.trim() === '' ? 'red' : 'transparent');
     setEmailBorderColor(email.trim() === '' ? 'red' : 'transparent');
     setPasswordBorderColor(password.trim() === '' ? 'red' : 'transparent');
-
   };
 
   return (

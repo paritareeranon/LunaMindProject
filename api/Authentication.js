@@ -21,7 +21,7 @@ export const CreateUser = async (email, password, firstname, surname, navigation
       surname: surname,
     })
     console.log("Add success");
-    
+  
     alert("Register success!");
     navigation.navigate("LoginView");
   } catch (e) {

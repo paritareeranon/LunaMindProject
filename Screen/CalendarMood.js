@@ -12,6 +12,8 @@ const CalendarMood = () => {
     const [moodData, setMoodData] = useState({});
     const navigation = useNavigation();
     const [selectedDate, setSelectedDate] = useState(null);
+    const [periodData, setPeriodData] = useState(null);
+    const [makerDate, setMarkedDates] = useState(null);
 
     const fetchMoodData = async () => {
         try {
@@ -26,7 +28,7 @@ const CalendarMood = () => {
                 const month = doc.id;
                 const moodDataArray = doc.data().moodData;
                 moodDataArray.forEach(({ date, mood }) => {
-                    moodDataFromFirebase[date] = { selected: true, selectedColor: getColorByMood(mood) };
+                    moodDataFromFirebase[date] = { selected: mood, selectedColor: getColorByMood(mood) };
                 });
             });
             setMoodData(moodDataFromFirebase);
@@ -35,15 +37,65 @@ const CalendarMood = () => {
         }
     };
 
+    const fetchPeriodData = async () => {
+        try {
+            const email = await AsyncStorage.getItem("useraccount");
+            if (email) {
+                const colRef = collection(firestore, 'UserInfo');
+                const docRef = doc(colRef, email);
+                const subColRef = collection(docRef, "period");
+                const snapshot = await getDocs(subColRef);
+
+                const data = {};
+                snapshot.forEach(doc => {
+                    data[doc.id] = doc.data();
+                });
+                setPeriodData(data);
+            }
+        } catch (error) {
+            console.error('Error fetching period data:', error);
+        }
+    };
+
     useEffect(() => {
+        fetchPeriodData();
         fetchMoodData();
     }, []);
 
     useFocusEffect(
         React.useCallback(() => {
             fetchMoodData();
+            fetchPeriodData();
         }, [])
     );
+
+    const markedDates = { ...makerDate, ...moodData };
+
+if (periodData) {
+    Object.entries(periodData).map(([month, monthData]) => {
+        const lastPeriodDate = monthData.LastPeriod;
+        const ovulationDate = monthData.OvulationDate;
+
+        markedDates[lastPeriodDate] = { marked: true, dotColor: 'red', ...markedDates[lastPeriodDate] };
+        markedDates[ovulationDate] = { marked: true, dotColor: '#A8D7DA', ...markedDates[ovulationDate] };
+
+        const startDate = new Date(lastPeriodDate);
+        for (let i = 0; i <= 3; i++) {
+            const nextDate = new Date(startDate);
+            nextDate.setDate(startDate.getDate() + i);
+            const formattedDate = nextDate.toISOString().split('T')[0];
+            markedDates[formattedDate] = { marked: true, dotColor: 'red', ...markedDates[formattedDate] };
+        }
+        const ovulationStartDate = new Date(ovulationDate);
+        for (let i = 0; i < 3; i++) {
+            const nextOvulationDate = new Date(ovulationStartDate);
+            nextOvulationDate.setDate(ovulationStartDate.getDate() + i);
+            const formattedOvulationDate = nextOvulationDate.toISOString().split('T')[0];
+            markedDates[formattedOvulationDate] = { marked: true, dotColor: '#A8D7DA', ...markedDates[formattedOvulationDate] };
+        }
+    });
+}
+
 
     const getColorByMood = (mood) => {
         switch (mood) {
@@ -65,15 +117,20 @@ const CalendarMood = () => {
     const handleDayPress = (day) => {
         const today = new Date();
         const selected = new Date(day.dateString);
-
+    
         if (selected <= today) {
             console.log(today)
             setSelectedDate(day.dateString);
+            const moodColor = moodData[day.dateString]?.selectedColor || 'transparent';
+            const markedDay = { ...markedDates }; // สร้าง object ใหม่เพื่อทำการ update
+            markedDay[day.dateString] = { ...markedDay[day.dateString], selected: true, selectedColor: moodColor }; // ทำการ update วันที่ถูกเลือกให้มีการแสดงผลเป็น selected
+            setMarkedDates(markedDay); // ใช้ setState เพื่อทำการอัพเดต markedDates
             navigation.navigate("Mood", { selectedDate: day.dateString });
         } else {
             console.log("Cannot select future dates");
         }
     };
+
 
     return (
         <View style={styles.container}>
@@ -90,7 +147,7 @@ const CalendarMood = () => {
             <View style={styles.calendar}>
                 <Calendar
                     onDayPress={handleDayPress}
-                    markedDates={moodData}
+                    markedDates={markedDates}
                     maxDate={new Date().toISOString().split('T')[0]}
                     theme={{
                         arrowColor: '#FF80B5',

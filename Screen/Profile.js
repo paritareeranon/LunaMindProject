@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, ImageBackground, Image, Alert, } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, ImageBackground, Image, Alert,  } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Icon from "react-native-vector-icons/FontAwesome";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -49,7 +49,7 @@ const Profile = ({ navigation }) => {
   const Logout = () => {
     Alert.alert(
       "Confirmation",
-      "Are you sure you want to go back to the login screen?",
+      "Please confirm you want to exit the app",
       [
         {
           text: "Cancel",
@@ -74,7 +74,7 @@ const Profile = ({ navigation }) => {
       <View style={styles.container}>
         <View style={styles.iconleft}>
           <TouchableOpacity onPress={() => navigation.navigate("NavigationBar")}>
-          <Icon name="angle-left" size={35}></Icon>
+            <Icon name="angle-left" size={35}></Icon>
           </TouchableOpacity>
         </View>
         <View style={styles.profileImage}>
